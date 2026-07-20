@@ -45,7 +45,7 @@ const activeRoute = routeForPath()
 const routeTitles: Record<string, string> = {
   home: 'Echora - 智能音乐工作空间',
   download: '下载 Echora',
-  releases: 'Echora 版本记录',
+  releases: 'Echora 版本与更新',
   privacy: 'Echora 隐私说明',
 }
 document.title = routeTitles[activeRoute]
@@ -182,7 +182,7 @@ const renderRelease = (catalog: ReleaseCatalog) => {
     if (heading) heading.textContent = `Echora v${catalog.version}`
     if (notes) notes.textContent = catalog.releaseNotes || '包含稳定性与体验改进。'
   })
-  document.querySelectorAll<HTMLElement>('[data-primary-download]').forEach((element) => { element.textContent = recommended ? downloadLabel(recommended) : '获取 Echora' })
+  document.querySelectorAll<HTMLElement>('[data-primary-download]').forEach((element) => { element.textContent = recommended ? downloadLabel(recommended) : '下载 Echora' })
   document.querySelectorAll<HTMLAnchorElement>('[data-github-release]').forEach((link) => {
     link.hidden = !catalog.releaseUrl
     if (catalog.releaseUrl) link.href = catalog.releaseUrl

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#f4f7fb" />
+    <meta name="theme-color" content="#f6f6f8" />
     <meta name="description" content="Echora 智能音乐工作空间，在同一个空间完成发现、编排与聆听。" />
     <link rel="icon" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -18,19 +18,19 @@
         <a href="/releases">版本</a>
         <a href="/privacy">隐私</a>
       </nav>
-      <a class="header-action" href="#download" data-download-jump aria-label="获取 Echora"><span>获取 Echora</span><i data-lucide="arrow-down-to-line"></i></a>
+      <a class="header-action" href="#download" data-download-jump aria-label="下载 Echora"><span>下载 Echora</span><i data-lucide="arrow-down-to-line"></i></a>
     </header>
 
     <main class="home-view" data-view="home">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-shade" aria-hidden="true"></div>
         <div class="hero-content">
-          <span class="hero-kicker">智能音乐工作空间</span>
+          <span class="hero-kicker"><img src="/brand-mark.svg" alt="" />智能音乐工作空间</span>
           <h1 id="hero-title">Echora</h1>
-          <p>从整个音乐世界出发，用会话形成编排，在一个安静、连续的空间里完成发现与聆听。</p>
+          <p>发现、编排与聆听，在同一个音乐空间自然衔接。</p>
           <div class="hero-actions">
-            <a class="primary-action" href="#download" data-download-jump><i data-lucide="download"></i><span data-primary-download>获取 Echora</span></a>
-            <a class="secondary-action" href="/releases"><span>查看最新版本</span><i data-lucide="arrow-right"></i></a>
+            <a class="primary-action" href="#download" data-download-jump><i data-lucide="download"></i><span data-primary-download>下载 Echora</span></a>
+            <a class="secondary-action" href="#product"><span>了解 Echora</span><i data-lucide="arrow-right"></i></a>
           </div>
           <div class="hero-facts" aria-label="产品特性">
             <span><i data-lucide="library-big"></i>多平台音乐</span>
@@ -40,35 +40,35 @@
         </div>
       </section>
 
-      <section class="download-band" id="download" aria-labelledby="download-title">
-        <div class="section-heading">
-          <div><span>下载</span><h2 id="download-title">在你的设备上使用 Echora</h2></div>
-          <p data-release-summary>正在读取最新版本</p>
-        </div>
-        <div class="recommended-download" data-recommended-download aria-live="polite">
-          <span class="recommended-icon"><i data-lucide="monitor-down"></i></span>
-          <div><small>推荐版本</small><strong>正在识别当前设备</strong><p>稍候即可获取适用的安装版本。</p></div>
-          <button type="button" disabled>准备中</button>
-        </div>
-        <div class="download-grid" data-download-grid></div>
-        <a class="release-source" href="#" data-github-release hidden target="_blank" rel="noreferrer">在 GitHub Releases 查看全部安装包<i data-lucide="arrow-up-right"></i></a>
-        <p class="download-footnote"><i data-lucide="badge-check"></i><span>正式版本提供校验信息；更新不会清除歌单、设置或本地音乐。</span></p>
-      </section>
-
       <section class="experience-band" id="product" aria-labelledby="experience-title">
         <div class="experience-copy">
-          <span>产品形态</span>
+          <span>同一个 Echora，各自舒适的体验</span>
           <h2 id="experience-title">为桌面与移动端分别设计</h2>
-          <p>共享音乐、播放与会话数据模型，各端保留符合设备习惯的导航、控制与内容密度。</p>
+          <p>音乐、歌单、播放与会话保持一致，界面则遵循每一种设备的使用方式。</p>
           <div class="experience-points">
-            <div><i data-lucide="monitor"></i><span><strong>桌面端</strong><small>更完整的资料库、编排与播放控制</small></span></div>
-            <div><i data-lucide="smartphone"></i><span><strong>移动端</strong><small>围绕触控、手势与随身聆听重新组织</small></span></div>
+            <div><i data-lucide="monitor"></i><span><strong>桌面端</strong><small>更完整的音乐资料库、智能编排与播放控制。</small></span></div>
+            <div><i data-lucide="smartphone"></i><span><strong>移动端</strong><small>围绕触控、手势和随身聆听重新组织。</small></span></div>
           </div>
         </div>
         <div class="product-scenes" aria-label="Echora 产品界面">
           <figure class="desktop-scene"><img src="/media/echora-desktop.png" alt="Echora 桌面端音乐首页" /></figure>
           <figure class="mobile-scene"><img src="/media/echora-mobile.png" alt="Echora 移动端音乐首页" /></figure>
         </div>
+      </section>
+
+      <section class="download-band" id="download" aria-labelledby="download-title">
+        <div class="section-heading">
+          <div><span>下载</span><h2 id="download-title">下载 Echora</h2></div>
+          <p data-release-summary>正在读取最新版本</p>
+        </div>
+        <div class="recommended-download" data-recommended-download aria-live="polite">
+          <span class="recommended-icon"><i data-lucide="monitor-down"></i></span>
+          <div><small>推荐版本</small><strong>正在识别当前设备</strong><p>稍候即可显示适合当前设备的版本。</p></div>
+          <button type="button" disabled>准备中</button>
+        </div>
+        <div class="download-grid" data-download-grid></div>
+        <a class="release-source" href="#" data-github-release hidden target="_blank" rel="noreferrer">在 GitHub Releases 查看全部安装包<i data-lucide="arrow-up-right"></i></a>
+        <p class="download-footnote"><i data-lucide="badge-check"></i><span>正式版本提供校验信息，更新不会影响你的歌单、设置与本地音乐。</span></p>
       </section>
 
       <section class="release-band" id="release" aria-labelledby="release-title">
@@ -93,7 +93,7 @@
     </main>
 
     <main class="route-view" data-view="download" hidden>
-      <section class="route-hero"><span>下载</span><h1>获取 Echora</h1><p>选择与你的设备匹配的正式版本。</p></section>
+      <section class="route-hero"><span>下载</span><h1>下载 Echora</h1><p>选择适合当前设备的正式版本。</p></section>
       <section class="route-content download-route-content"><div class="recommended-download" data-recommended-download></div><div class="download-grid" data-download-grid></div><a class="release-source" href="#" data-github-release hidden target="_blank" rel="noreferrer">在 GitHub Releases 查看全部安装包<i data-lucide="arrow-up-right"></i></a></section>
     </main>
 
