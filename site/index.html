@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f4f7fb" />
+    <meta name="description" content="Echora 智能音乐工作空间，在同一个空间完成发现、编排与聆听。" />
+    <link rel="icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>Echora - 智能音乐工作空间</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Echora 首页"><span class="brand-symbol"><img src="/brand-mark.svg" alt="" /></span><strong>Echora</strong></a>
+      <nav aria-label="官网导航">
+        <a href="/download">下载</a>
+        <a href="/releases">版本</a>
+        <a href="/help/install/ios">iOS 安装</a>
+      </nav>
+      <a class="header-action" href="#download" data-download-jump aria-label="获取 Echora"><span>获取 Echora</span><i data-lucide="arrow-down-to-line"></i></a>
+    </header>
+
+    <main class="home-view" data-view="home">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-shade" aria-hidden="true"></div>
+        <div class="hero-content">
+          <span class="hero-kicker">智能音乐工作空间</span>
+          <h1 id="hero-title">Echora</h1>
+          <p>从整个音乐世界出发，用会话形成编排，在一个安静、连续的空间里完成发现与聆听。</p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#download" data-download-jump><i data-lucide="download"></i><span data-primary-download>获取 Echora</span></a>
+            <a class="secondary-action" href="/releases"><span>查看最新版本</span><i data-lucide="arrow-right"></i></a>
+          </div>
+          <div class="hero-facts" aria-label="产品特性">
+            <span><i data-lucide="library-big"></i>多平台音乐</span>
+            <span><i data-lucide="sparkles"></i>AI 编排</span>
+            <span><i data-lucide="shield-check"></i>本地优先</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="download-band" id="download" aria-labelledby="download-title">
+        <div class="section-heading">
+          <div><span>下载</span><h2 id="download-title">在你的设备上使用 Echora</h2></div>
+          <p data-release-summary>正在读取最新版本</p>
+        </div>
+        <div class="recommended-download" data-recommended-download aria-live="polite">
+          <span class="recommended-icon"><i data-lucide="monitor-down"></i></span>
+          <div><small>推荐版本</small><strong>正在识别当前设备</strong><p>稍候即可获取适用的安装版本。</p></div>
+          <button type="button" disabled>准备中</button>
+        </div>
+        <div class="download-grid" data-download-grid></div>
+        <p class="download-footnote"><i data-lucide="badge-check"></i><span>正式版本提供校验信息；更新不会清除歌单、设置或本地音乐。</span></p>
+      </section>
+
+      <section class="experience-band" aria-labelledby="experience-title">
+        <div class="experience-copy">
+          <span>产品形态</span>
+          <h2 id="experience-title">为桌面与移动端分别设计</h2>
+          <p>共享音乐、播放与会话数据模型，各端保留符合设备习惯的导航、控制与内容密度。</p>
+          <div class="experience-points">
+            <div><i data-lucide="monitor"></i><span><strong>桌面端</strong><small>更完整的资料库、编排与播放控制</small></span></div>
+            <div><i data-lucide="smartphone"></i><span><strong>移动端</strong><small>围绕触控、手势与随身聆听重新组织</small></span></div>
+          </div>
+        </div>
+        <div class="product-scenes" aria-label="Echora 产品界面">
+          <figure class="desktop-scene"><img src="/media/echora-desktop.png" alt="Echora 桌面端音乐首页" /></figure>
+          <figure class="mobile-scene"><img src="/media/echora-mobile.png" alt="Echora 移动端音乐首页" /></figure>
+        </div>
+      </section>
+
+      <section class="release-band" id="release" aria-labelledby="release-title">
+        <div class="section-heading">
+          <div><span>最新版本</span><h2 id="release-title" data-release-title>等待首个公开版本</h2></div>
+          <a href="/releases">全部版本<i data-lucide="chevron-right"></i></a>
+        </div>
+        <div class="release-detail" data-release-detail>
+          <div class="release-date"><i data-lucide="calendar-days"></i><span>版本发布后将在这里显示更新内容。</span></div>
+          <p>下载页与客户端会自动使用同一份发布信息。</p>
+        </div>
+      </section>
+
+      <section class="trust-band" aria-labelledby="trust-title">
+        <div><span>数据边界</span><h2 id="trust-title">你的音乐习惯留在你的设备</h2></div>
+        <p>Echora 默认在本地保存歌单、会话、记忆与服务凭据。网页、桌面和移动版本会明确说明各自的存储位置。</p>
+        <a href="/privacy">隐私说明<i data-lucide="arrow-right"></i></a>
+      </section>
+    </main>
+
+    <main class="route-view" data-view="download" hidden>
+      <section class="route-hero"><span>下载</span><h1>获取 Echora</h1><p>选择与你的设备匹配的正式版本。</p></section>
+      <section class="route-content download-route-content"><div class="recommended-download" data-recommended-download></div><div class="download-grid" data-download-grid></div></section>
+    </main>
+
+    <main class="route-view" data-view="releases" hidden>
+      <section class="route-hero"><span>版本</span><h1>版本记录</h1><p>查看当前正式版及其更新内容。</p></section>
+      <section class="route-content"><article class="release-article" data-release-article><span>正式版</span><h2>等待首个公开版本</h2><p>版本发布后将在这里显示。</p></article></section>
+    </main>
+
+    <main class="route-view" data-view="privacy" hidden>
+      <section class="route-hero"><span>隐私</span><h1>清楚的数据边界</h1><p>不同终端使用不同的本地存储方式，核心原则保持一致。</p></section>
+      <section class="route-content prose">
+        <article><h2>本地保存</h2><p>歌单、喜欢、播放状态、AI 会话、长期记忆和服务配置默认保存在当前设备。Echora 不要求登录才能使用这些能力。</p></article>
+        <article><h2>外部服务</h2><p>音乐检索、播放地址和 AI 会话仅在对应功能被使用时请求已配置的服务。密钥不会写入会话内容或公开发布信息。</p></article>
+        <article><h2>更新检测</h2><p>检查更新时只发送应用版本、平台、系统架构、更新通道、构建标识和随机生成的安装标识，不读取硬件序列号。</p></article>
+      </section>
+    </main>
+
+    <main class="route-view" data-view="ios" hidden>
+      <section class="route-hero"><span>iOS</span><h1>安装 Echora</h1><p>iOS 版本以签名安装包提供，不经过应用商店。</p></section>
+      <section class="route-content prose">
+        <article><h2>安装前</h2><p>确认安装包来源为 Echora 正式发布，并核对版本页面提供的文件校验信息。</p></article>
+        <article><h2>签名方式</h2><p>公开 IPA 需要使用个人证书、已登记设备的 Ad Hoc 证书或合规的组织内部证书完成安装。证书有效期由签名方式决定。</p></article>
+        <article><h2>版本更新</h2><p>应用会提示适用于 iOS 的新版本。更新安装不会清除 Echora 在应用目录内保存的歌单、设置和离线音乐。</p></article>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand footer-brand" href="/"><span class="brand-symbol"><img src="/brand-mark.svg" alt="" /></span><strong>Echora</strong></a>
+      <p>智能音乐工作空间</p>
+      <nav aria-label="页脚导航"><a href="/download">下载</a><a href="/releases">版本</a><a href="/privacy">隐私</a></nav>
+    </footer>
+    <script type="module" src="/main.ts"></script>
+  </body>
+</html>

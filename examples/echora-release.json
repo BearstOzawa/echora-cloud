@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "minimumVersion": "0.1.0",
+  "buildId": "replace-with-ci-build-id",
+  "rollout": {
+    "percentage": 100,
+    "salt": "replace-with-release-specific-salt"
+  },
+  "targets": {
+    "desktop:darwin:aarch64": "Echora_aarch64.dmg",
+    "desktop:darwin:x86_64": "Echora_x64.dmg",
+    "desktop:windows:x86_64": "Echora_x64-setup.exe",
+    "desktop:linux:x86_64": "Echora_amd64.AppImage",
+    "mobile:android:universal": "Echora_universal.apk",
+    "mobile:ios:aarch64": "Echora.ipa",
+    "tauri:darwin-aarch64": {
+      "asset": "Echora_aarch64.app.tar.gz",
+      "type": "tauri-update",
+      "signatureAsset": "Echora_aarch64.app.tar.gz.sig"
+    }
+  }
+}
