@@ -82,8 +82,9 @@ img { display: block; max-width: 100%; }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
 .section-heading h2, .experience-copy h2, .trust-band h2 { margin: 7px 0 0; max-width: 720px; font-size: clamp(32px, 4vw, 48px); line-height: 1.12; }
 .section-heading > p { margin: 0 0 4px; color: var(--muted); font-size: 14px; }
-.section-heading > a { display: inline-flex; align-items: center; gap: 5px; color: var(--accent-strong); font-size: 14px; font-weight: 680; }
-.section-heading > a svg { width: 16px; }
+.release-links { display: flex; align-items: center; gap: 18px; }
+.release-links > a { display: inline-flex; align-items: center; gap: 5px; color: var(--accent-strong); font-size: 14px; font-weight: 680; }
+.release-links > a svg { width: 16px; }
 
 .recommended-download {
   min-height: 118px;
@@ -116,8 +117,12 @@ img { display: block; max-width: 100%; }
 .download-card-platform { color: var(--accent-strong); font-size: 12px; font-weight: 700; }
 .download-card strong { margin-top: 6px; font-size: 17px; }
 .download-card small { margin-top: 5px; color: var(--faint); font-size: 12px; }
-.download-card a { align-self: flex-start; color: var(--ink); font-size: 14px; font-weight: 680; }
-.download-card a:hover { color: var(--accent-strong); }
+.download-card-actions { display: flex; align-items: center; gap: 14px; }
+.download-card-actions a { color: var(--ink); font-size: 14px; font-weight: 680; }
+.download-card-actions a:hover { color: var(--accent-strong); }
+.download-card-actions .github-fallback { color: var(--muted); font-size: 13px; font-weight: 620; }
+.release-source { width: fit-content; margin-top: 18px; display: inline-flex; align-items: center; gap: 6px; color: var(--accent-strong); font-size: 13px; font-weight: 650; }
+.release-source svg { width: 15px; height: 15px; }
 .download-footnote { margin: 18px 0 0; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
 .download-footnote svg { width: 16px; height: 16px; color: var(--green); }
 
@@ -158,6 +163,8 @@ img { display: block; max-width: 100%; }
 .release-article > span { color: var(--accent-strong); font-size: 12px; font-weight: 700; }
 .release-article h2 { margin: 8px 0 0; font-size: 28px; }
 .release-article p { margin: 14px 0 0; color: var(--muted); font-size: 16px; line-height: 1.75; white-space: pre-wrap; }
+.release-article > a { width: fit-content; margin-top: 22px; display: inline-flex; align-items: center; gap: 6px; color: var(--accent-strong); font-size: 14px; font-weight: 680; }
+.release-article > a svg { width: 16px; height: 16px; }
 .prose { display: grid; gap: 0; }
 .prose article { padding: 28px 0; border-bottom: 1px solid var(--line); }
 .prose h2 { margin: 0; font-size: 22px; }
@@ -179,6 +186,7 @@ footer nav { display: flex; gap: 18px; color: var(--muted); font-size: 13px; }
   .hero-content > p { font-size: 18px; }
   .download-band, .release-band { padding: 68px 20px; }
   .section-heading { align-items: start; flex-direction: column; gap: 14px; }
+  .release-links { flex-wrap: wrap; gap: 14px; }
   .recommended-download { grid-template-columns: 46px minmax(0, 1fr); padding: 18px; }
   .recommended-icon { width: 46px; height: 46px; border-radius: 13px; }
   .recommended-download > a, .recommended-download > button { grid-column: 1 / -1; width: 100%; }

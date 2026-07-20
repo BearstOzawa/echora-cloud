@@ -81,6 +81,7 @@ const releaseCatalogRequest = async (request: Request, env: WorkerEnv, execution
     channel,
     publishedAt: manifest.publishedAt,
     releaseNotes: manifest.releaseNotes,
+    releaseUrl: manifest.releaseUrl,
     downloads: Object.entries(manifest.actions)
       .filter(([, action]) => action.type !== 'tauri-update')
       .map(([target, action]) => ({ target, ...action })),
@@ -93,6 +94,7 @@ export default {
     if (request.method !== 'GET') return json(env, { error: 'method not allowed' }, 405)
     const url = new URL(request.url)
     if (url.pathname === '/health') return json(env, { ok: true, service: 'echora-cloud' })
+    if (url.pathname === '/help/install/ios') return Response.redirect(new URL('/download', url), 308)
     try {
       if (url.pathname === '/v1/releases/latest') return await releaseCatalogRequest(request, env, execution)
       if (url.pathname === '/v1/check') return await checkRequest(request, env, execution)

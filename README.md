@@ -22,9 +22,8 @@ http://127.0.0.1:8787/
 - `/download` 动态下载中心
 - `/releases` 版本记录
 - `/privacy` 隐私说明
-- `/help/install/ios` iOS 安装说明
 
-官网不保存版本号或安装包地址，页面通过 `/v1/releases/latest` 获取当前 GitHub Release。
+官网不保存版本号或安装包地址，页面通过 `/v1/releases/latest` 获取当前 GitHub Release，并提供对应的 Release 页面和备用下载入口。
 
 复制本地变量并填写 GitHub 仓库：
 

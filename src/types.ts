@@ -16,6 +16,7 @@ export type ReleaseManifest = {
   schemaVersion: 1
   version: string
   minimumVersion: string
+  releaseUrl?: string
   buildId?: string
   publishedAt: string
   releaseNotes: string

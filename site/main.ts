@@ -1,4 +1,4 @@
-import { ArrowDownToLine, ArrowRight, BadgeCheck, CalendarDays, ChevronRight, Download, Globe2, LibraryBig, Monitor, MonitorDown, PackageOpen, ShieldCheck, Smartphone, Sparkles, createIcons } from 'lucide'
+import { ArrowDownToLine, ArrowRight, ArrowUpRight, BadgeCheck, CalendarDays, ChevronRight, Download, Globe2, LibraryBig, Monitor, MonitorDown, PackageOpen, ShieldCheck, Smartphone, Sparkles, createIcons } from 'lucide'
 import './site.css'
 
 type DownloadAction = {
@@ -16,10 +16,11 @@ type ReleaseCatalog = {
   channel: string
   publishedAt: string
   releaseNotes: string
+  releaseUrl?: string
   downloads: DownloadAction[]
 }
 
-const icons = { ArrowDownToLine, ArrowRight, BadgeCheck, CalendarDays, ChevronRight, Download, Globe2, LibraryBig, Monitor, MonitorDown, PackageOpen, ShieldCheck, Smartphone, Sparkles }
+const icons = { ArrowDownToLine, ArrowRight, ArrowUpRight, BadgeCheck, CalendarDays, ChevronRight, Download, Globe2, LibraryBig, Monitor, MonitorDown, PackageOpen, ShieldCheck, Smartphone, Sparkles }
 createIcons({ icons })
 
 const platformDefinitions = {
@@ -34,7 +35,6 @@ const platformDefinitions = {
 type PlatformKey = keyof typeof platformDefinitions
 
 const routeForPath = () => {
-  if (location.pathname.startsWith('/help/install/ios')) return 'ios'
   if (location.pathname.startsWith('/privacy')) return 'privacy'
   if (location.pathname.startsWith('/releases')) return 'releases'
   if (location.pathname.startsWith('/download')) return 'download'
@@ -47,7 +47,6 @@ const routeTitles: Record<string, string> = {
   download: '下载 Echora',
   releases: 'Echora 版本记录',
   privacy: 'Echora 隐私说明',
-  ios: '在 iOS 上安装 Echora',
 }
 document.title = routeTitles[activeRoute]
 document.querySelectorAll<HTMLElement>('[data-view]').forEach((view) => { view.hidden = view.dataset.view !== activeRoute })
@@ -99,12 +98,25 @@ const downloadCard = (action: DownloadAction, recommended = false) => {
   const meta = document.createElement('small')
   meta.textContent = [formatSize(action.size), action.sha256 ? '已提供校验' : '正式发布'].filter(Boolean).join(' · ')
   copy.append(label, title, meta)
-  const link = document.createElement('a')
-  link.href = action.url
-  link.rel = 'noreferrer'
-  link.textContent = downloadLabel(action)
-  link.setAttribute('aria-label', downloadLabel(action))
-  article.append(copy, link)
+  const actions = document.createElement('div')
+  actions.className = 'download-card-actions'
+  const primaryLink = document.createElement('a')
+  primaryLink.href = action.url
+  primaryLink.rel = 'noreferrer'
+  primaryLink.textContent = downloadLabel(action)
+  primaryLink.setAttribute('aria-label', downloadLabel(action))
+  actions.append(primaryLink)
+  if (action.fallbackUrl && action.fallbackUrl !== action.url) {
+    const githubLink = document.createElement('a')
+    githubLink.className = 'github-fallback'
+    githubLink.href = action.fallbackUrl
+    githubLink.target = '_blank'
+    githubLink.rel = 'noreferrer'
+    githubLink.textContent = 'GitHub'
+    githubLink.setAttribute('aria-label', `通过 GitHub 下载 ${definition.label}`)
+    actions.append(githubLink)
+  }
+  article.append(copy, actions)
   return article
 }
 
@@ -171,6 +183,10 @@ const renderRelease = (catalog: ReleaseCatalog) => {
     if (notes) notes.textContent = catalog.releaseNotes || '包含稳定性与体验改进。'
   })
   document.querySelectorAll<HTMLElement>('[data-primary-download]').forEach((element) => { element.textContent = recommended ? downloadLabel(recommended) : '获取 Echora' })
+  document.querySelectorAll<HTMLAnchorElement>('[data-github-release]').forEach((link) => {
+    link.hidden = !catalog.releaseUrl
+    if (catalog.releaseUrl) link.href = catalog.releaseUrl
+  })
   createIcons({ icons })
 }
 
@@ -178,6 +194,7 @@ const renderPendingRelease = () => {
   renderRecommended(undefined)
   document.querySelectorAll<HTMLElement>('[data-download-grid]').forEach((grid) => grid.replaceChildren())
   document.querySelectorAll<HTMLElement>('[data-release-summary]').forEach((element) => { element.textContent = '首个公开版本准备中' })
+  document.querySelectorAll<HTMLAnchorElement>('[data-github-release]').forEach((link) => { link.hidden = true })
   createIcons({ icons })
 }
 

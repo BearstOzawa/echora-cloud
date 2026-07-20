@@ -11,6 +11,7 @@ type GithubAsset = {
 
 type GithubRelease = {
   tag_name: string
+  html_url: string
   name?: string | null
   body?: string | null
   draft: boolean
@@ -160,6 +161,7 @@ export const fetchGithubReleaseManifest = async (env: WorkerEnv, channel: string
     schemaVersion: 1,
     version,
     minimumVersion,
+    releaseUrl: release.html_url,
     buildId: policy?.buildId ?? release.tag_name,
     publishedAt: release.published_at ?? release.created_at,
     releaseNotes: policy?.releaseNotes?.trim() || release.body?.trim() || release.name?.trim() || '',

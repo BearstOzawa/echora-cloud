@@ -8,6 +8,7 @@ describe('GitHub release source', () => {
   it('derives platform actions from the latest release assets', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({
       tag_name: 'v0.2.0',
+      html_url: 'https://github.test/echora/app/releases/tag/v0.2.0',
       name: 'Echora 0.2.0',
       body: '本次更新说明',
       draft: false,
@@ -24,7 +25,12 @@ describe('GitHub release source', () => {
       R2_DOWNLOAD_BASE_URL: 'https://releases.echora.test',
       WEB_APP_URL: 'https://echora.test/app',
     }, 'stable')
-    expect(manifest).toMatchObject({ version: '0.2.0', minimumVersion: '0.0.0', releaseNotes: '本次更新说明' })
+    expect(manifest).toMatchObject({
+      version: '0.2.0',
+      minimumVersion: '0.0.0',
+      releaseNotes: '本次更新说明',
+      releaseUrl: 'https://github.test/echora/app/releases/tag/v0.2.0',
+    })
     expect(manifest.actions['desktop:darwin:aarch64']).toMatchObject({
       type: 'github-release',
       url: 'https://releases.echora.test/v0.2.0/Echora_0.2.0_aarch64.dmg',

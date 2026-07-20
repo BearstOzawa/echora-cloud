@@ -6,6 +6,7 @@ const release: ReleaseManifest = {
   schemaVersion: 1,
   version: '0.2.0',
   minimumVersion: '0.1.0',
+  releaseUrl: 'https://github.example/echora/releases/tag/v0.2.0',
   publishedAt: '2026-07-20T10:00:00Z',
   releaseNotes: '更新说明',
   actions: { web: { type: 'web-refresh', url: 'https://echora.example/' } },
@@ -40,6 +41,17 @@ describe('update worker', () => {
   it('serves a release catalog for the official website', async () => {
     const response = await worker.fetch(new Request('https://updates.example/v1/releases/latest'), env)
     expect(response.status).toBe(200)
-    await expect(response.json()).resolves.toMatchObject({ version: '0.2.0', channel: 'stable', downloads: [{ target: 'web', type: 'web-refresh' }] })
+    await expect(response.json()).resolves.toMatchObject({
+      version: '0.2.0',
+      channel: 'stable',
+      releaseUrl: 'https://github.example/echora/releases/tag/v0.2.0',
+      downloads: [{ target: 'web', type: 'web-refresh' }],
+    })
+  })
+
+  it('redirects the retired iOS help route to downloads', async () => {
+    const response = await worker.fetch(new Request('https://updates.example/help/install/ios'), env)
+    expect(response.status).toBe(308)
+    expect(response.headers.get('Location')).toBe('https://updates.example/download')
   })
 })
