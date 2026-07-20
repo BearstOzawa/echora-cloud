@@ -187,6 +187,7 @@ const renderRelease = (catalog: ReleaseCatalog) => {
     link.hidden = !catalog.releaseUrl
     if (catalog.releaseUrl) link.href = catalog.releaseUrl
   })
+  document.querySelectorAll<HTMLElement>('[data-release-nav], [data-release-section]').forEach((element) => { element.hidden = false })
   createIcons({ icons })
 }
 
@@ -195,6 +196,8 @@ const renderPendingRelease = () => {
   document.querySelectorAll<HTMLElement>('[data-download-grid]').forEach((grid) => grid.replaceChildren())
   document.querySelectorAll<HTMLElement>('[data-release-summary]').forEach((element) => { element.textContent = '首个公开版本准备中' })
   document.querySelectorAll<HTMLAnchorElement>('[data-github-release]').forEach((link) => { link.hidden = true })
+  document.querySelectorAll<HTMLElement>('[data-release-nav], [data-release-section]').forEach((element) => { element.hidden = true })
+  if (activeRoute === 'releases') location.replace('/download')
   createIcons({ icons })
 }
 

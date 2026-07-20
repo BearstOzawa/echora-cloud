@@ -14,11 +14,10 @@
       <a class="brand" href="/" aria-label="Echora 首页"><span class="brand-symbol"><img src="/brand-mark.svg" alt="" /></span><strong>Echora</strong></a>
       <nav aria-label="官网导航">
         <a href="/#product">产品</a>
-        <a href="/download">下载</a>
-        <a href="/releases">版本</a>
+        <a href="/releases" data-release-nav hidden>版本</a>
         <a href="/privacy">隐私</a>
       </nav>
-      <a class="header-action" href="#download" data-download-jump aria-label="下载 Echora"><span>下载 Echora</span><i data-lucide="arrow-down-to-line"></i></a>
+      <a class="header-action" href="#download" data-download-jump aria-label="下载 Echora"><span>下载</span><i data-lucide="arrow-down-to-line"></i></a>
     </header>
 
     <main class="home-view" data-view="home">
@@ -58,7 +57,7 @@
 
       <section class="download-band" id="download" aria-labelledby="download-title">
         <div class="section-heading">
-          <div><span>下载</span><h2 id="download-title">下载 Echora</h2></div>
+          <div><span>桌面与移动端</span><h2 id="download-title">下载 Echora</h2></div>
           <p data-release-summary>正在读取最新版本</p>
         </div>
         <div class="recommended-download" data-recommended-download aria-live="polite">
@@ -71,7 +70,7 @@
         <p class="download-footnote"><i data-lucide="badge-check"></i><span>正式版本提供校验信息，更新不会影响你的歌单、设置与本地音乐。</span></p>
       </section>
 
-      <section class="release-band" id="release" aria-labelledby="release-title">
+      <section class="release-band" id="release" aria-labelledby="release-title" data-release-section hidden>
         <div class="section-heading">
           <div><span>最新版本</span><h2 id="release-title" data-release-title>等待首个公开版本</h2></div>
           <div class="release-links">
@@ -93,7 +92,7 @@
     </main>
 
     <main class="route-view" data-view="download" hidden>
-      <section class="route-hero"><span>下载</span><h1>下载 Echora</h1><p>选择适合当前设备的正式版本。</p></section>
+      <section class="route-hero"><span>正式版本</span><h1>下载 Echora</h1><p>选择适合当前设备的版本。</p></section>
       <section class="route-content download-route-content"><div class="recommended-download" data-recommended-download></div><div class="download-grid" data-download-grid></div><a class="release-source" href="#" data-github-release hidden target="_blank" rel="noreferrer">在 GitHub Releases 查看全部安装包<i data-lucide="arrow-up-right"></i></a></section>
     </main>
 
@@ -114,7 +113,7 @@
     <footer>
       <a class="brand footer-brand" href="/"><span class="brand-symbol"><img src="/brand-mark.svg" alt="" /></span><strong>Echora</strong></a>
       <p>智能音乐工作空间</p>
-      <nav aria-label="页脚导航"><a href="/download">下载</a><a href="/releases">版本</a><a href="/privacy">隐私</a></nav>
+      <nav aria-label="页脚导航"><a href="/download">下载</a><a href="/releases" data-release-nav hidden>版本</a><a href="/privacy">隐私</a></nav>
     </footer>
     <script type="module" src="/main.ts"></script>
   </body>

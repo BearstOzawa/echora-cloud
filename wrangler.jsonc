@@ -12,8 +12,15 @@
   },
   "vars": {
     "ALLOWED_ORIGIN": "*",
-    "GITHUB_CACHE_SECONDS": "600"
+    "GITHUB_CACHE_SECONDS": "600",
+    "GITHUB_REPOSITORY": "BearstOzawa/echora-cloud"
   },
+  "kv_namespaces": [
+    {
+      "binding": "RELEASES",
+      "id": "baaf2d43c4464091a1d4a8008a00dffe"
+    }
+  ],
   "observability": {
     "enabled": true
   }
