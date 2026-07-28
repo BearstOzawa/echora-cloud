@@ -61,7 +61,8 @@ jobs:
       - name: Read version
         if: steps.configuration.outputs.ready == 'true'
         id: version
-        run: echo "value=$(node -p \"require('./package.json').version\")" >> "$GITHUB_OUTPUT"
+        run: |
+          node -p '"value=" + require("./package.json").version' >> "$GITHUB_OUTPUT"
       - name: Register deployment
         if: steps.configuration.outputs.ready == 'true'
         env:
