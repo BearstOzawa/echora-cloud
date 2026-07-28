@@ -18,11 +18,11 @@
     "lucide": "^0.468.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260719.1",
+    "@cloudflare/workers-types": "^5.20260728.1",
     "@types/node": "^22.20.1",
     "typescript": "^5.8.3",
     "vite": "^6.4.3",
     "vitest": "^4.1.10",
-    "wrangler": "^4.25.0"
+    "wrangler": "^4.114.0"
   }
 }
