@@ -1,56 +1,76 @@
 # Echora Cloud
 
-Echora 的官网、账户数据、在线音乐、托管 AI 与版本分发服务。
+Echora Cloud 是 Echora 的云端服务与产品站点，运行在 Cloudflare Workers 上。
 
-## 产品边界
+- 官网与账户：[echora-cloud.lili.uno](https://echora-cloud.lili.uno)
+- Web 应用：[echora-web.lili.uno](https://echora-web.lili.uno)
+- 客户端仓库：[BearstOzawa/echora](https://github.com/BearstOzawa/echora)
 
-- 在线音乐无需登录；Cloud 负责检索与解析，音频由终端直连内容源。
-- Echora AI 需要登录并经 Cloud 转发；自定义 AI 由终端直连，凭据加密保存。
-- 设置、歌单、收藏、会话和长期偏好以云端为准，原生端保留离线快照与待提交更改。
-- 下载和导入音乐属于设备，不进入账户数据，也不经过 Cloud 存储或转发。
-- 版本与安装包来自 GitHub Releases；R2 只承载官网媒体、头像、附件或可选安装包镜像。
+## 服务职责
 
-## Cloudflare 资源
+- 账户、会话和设备管理
+- 歌单、收藏、设置、AI 会话与长期偏好
+- 在线音乐检索、榜单聚合和播放地址解析
+- EchoraAI 请求代理与自定义 AI 配置保管
+- 官网、用户中心和系统管理
+- Web、桌面、Android 与 iOS 的版本登记和发布策略
 
-| 资源 | 名称 | 职责 |
-| --- | --- | --- |
-| Worker | `echora-cloud` | API、官网与定时任务 |
-| D1 | `echora-cloud` | 账户、云端数据、版本记录和审计 |
-| KV | `echora-cloud` | 系统配置与已发布版本快照 |
-| R2 | `echora-cloud` | 产品文件与对象资源 |
+音乐解析请求由 Cloud 发起，音频地址返回后由终端直连内容源。下载音乐、导入音乐和播放缓存保存在设备本地，不进入账户数据，也不经过 Cloud 持续转发。
 
-## 账户与管理
+## 技术结构
 
-- 普通账户与管理员账户使用独立的数据表、会话和入口；管理员不参与用户数据、设备与同步统计。
-- 注册、账户恢复和管理员登录使用 Turnstile；普通登录仅在连续失败或触发限流后要求验证。
-- 管理操作写入审计记录。管理员无恢复码，密码由已登录的管理员自行更新。
+| 组件 | 职责 |
+| --- | --- |
+| Workers | HTTP API、官网资源、计划任务 |
+| D1 | 账户、云端数据、管理员、审计、版本与服务健康记录 |
+| KV | 系统配置和已发布版本快照 |
+| R2 | 官网媒体与对象资源 |
+| Turnstile | 风险场景下的人机验证 |
+
+普通账户与管理员使用独立的身份、会话和数据表。管理员不计入用户与设备统计。
+
+完整边界见 [docs/architecture.md](docs/architecture.md)。
 
 ## 开发
 
+需要 Node.js 22 和 Wrangler。
+
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-本地地址为 `http://127.0.0.1:8787/`。本地密钥写入 `.dev.vars`，字段见 `.dev.vars.example`。
+本地 Worker 默认运行在 `http://127.0.0.1:8787`。公开配置写入 `.env.local`，服务端密钥写入 `.dev.vars`；可用字段见 `.env.example` 和 `.dev.vars.example`。
 
-## 部署
-
-生产密钥写入已忽略的 `.prod.vars`，或逐项使用 `wrangler secret put`。不要提交密钥，也不需要通过聊天传递。
-
-`ADMIN_BOOTSTRAP_USERNAME` 与 `ADMIN_BOOTSTRAP_PASSWORD` 只用于首次建立管理员账户。首次登录 `/admin` 后，密码由独立管理员账户维护，可删除生产环境中的 `ADMIN_BOOTSTRAP_PASSWORD`。
+提交前运行：
 
 ```bash
 npm run typecheck
 npm test
 npm run build
-npx wrangler secret bulk .prod.vars
-npx wrangler d1 migrations apply echora-cloud --remote
-npx wrangler deploy
 ```
 
-## 版本与发布
+## 数据库
 
-D1 保存产品、版本、部署与发布策略；KV 提供已发布快照。GitHub Releases 负责安装包，导入后由管理员确认发布。客户端更新检查不实时访问 GitHub。
+D1 结构通过 `migrations/` 顺序维护。不要修改已经部署的 migration；结构变化应新增文件。
 
-GitHub Webhook 使用 `/v1/internal/releases/github`，部署登记使用 `/v1/internal/deployments`。对应密钥为 `GITHUB_WEBHOOK_SECRET` 与 `INTERNAL_INGESTION_SECRET`。
+```bash
+npx wrangler d1 migrations apply echora-cloud --local
+npx wrangler d1 migrations apply echora-cloud --remote
+```
+
+生产迁移和 Worker 部署由 GitHub Actions 的 production environment 管理。手工部署流程见 [docs/deployment.md](docs/deployment.md)。
+
+## 版本管理
+
+Web 与 Cloud 部署完成后通过签名接口登记构建。Echora 原生安装包由 GitHub Releases 承载，Release 发布事件通过 Webhook 导入 Cloud，管理员确认后才进入正式更新渠道。
+
+Cloud 不在请求时实时读取 GitHub，也不在代码中重复维护安装包地址。
+
+## 贡献与安全
+
+提交代码前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。安全问题和凭据泄露请按 [SECURITY.md](SECURITY.md) 私下报告。
+
+## 许可证
+
+项目尚未发布开源许可证。在许可证确定前，仓库内容仅供查看，不授予复制、修改或再分发权利。
