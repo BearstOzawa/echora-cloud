@@ -5,8 +5,8 @@
 仓库使用 `production` environment 管理生产部署。建议为该环境启用人工审批，并配置：
 
 - Secret `CLOUDFLARE_API_TOKEN`
-- Secret `CLOUDFLARE_ACCOUNT_ID`
 - Secret `ECHORA_CLOUD_INGESTION_SECRET`
+- Variable `CLOUDFLARE_ACCOUNT_ID`
 
 `ECHORA_CLOUD_INGESTION_SECRET` 必须与 Worker 的 `INTERNAL_INGESTION_SECRET` 相同，只用于签名部署登记请求。
 
