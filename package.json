@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev:site": "vite --host 127.0.0.1 --port 8787",
+    "dev:site": "vite",
     "dev": "npm run build && wrangler dev",
     "preview": "vite preview --host 127.0.0.1 --port 8787",
     "deploy": "npm run build && wrangler deploy",
@@ -13,10 +13,12 @@
     "typecheck": "tsc --noEmit && tsc -p site/tsconfig.json --noEmit"
   },
   "dependencies": {
+    "js-md5": "^0.9.2",
     "lucide": "^0.468.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260719.1",
+    "@types/node": "^22.20.1",
     "typescript": "^5.8.3",
     "vite": "^6.4.3",
     "vitest": "^4.1.10",

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="echora-face" x1="17" y1="13" x2="48" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff9bb4"/>
+      <stop offset=".48" stop-color="#ff668c"/>
+      <stop offset="1" stop-color="#d9366a"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#echora-face)" stroke-linecap="round">
+    <path d="M46 14.5A22 22 0 1 0 46 49.5" stroke-width="5.8"/>
+    <path d="M24.5 23.5h15M24.5 32h19M24.5 40.5h12.5" stroke-width="5.2"/>
+  </g>
+</svg>

@@ -5,69 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#f6f6f8" />
     <meta name="description" content="Echora 智能音乐工作空间，在同一个空间完成发现、编排与聆听。" />
-    <link rel="icon" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/favicon-v2.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png" />
     <title>Echora - 智能音乐工作空间</title>
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="Echora 首页"><span class="brand-symbol"><img src="/brand-mark.svg" alt="" /></span><strong>Echora</strong></a>
+      <a class="brand" href="/" aria-label="Echora 首页"><span class="brand-symbol"><img src="/echora-mark-v2.svg" alt="" /></span><strong>Echora</strong></a>
       <nav aria-label="官网导航">
-        <a href="/#product">产品</a>
+        <a href="/product">产品</a>
+        <a href="https://echora-web.lili.uno/" data-web-app-link>Web 版</a>
         <a href="/releases" data-release-nav hidden>版本</a>
         <a href="/privacy">隐私</a>
+        <a href="/account" class="account-nav" data-account-nav><span class="account-nav-avatar" data-account-nav-avatar hidden>E</span><span data-account-nav-label>账户</span></a>
       </nav>
-      <a class="header-action" href="#download" data-download-jump aria-label="下载 Echora"><span>下载</span><i data-lucide="arrow-down-to-line"></i></a>
+      <a class="header-action" href="#clients" data-client-jump><span>使用 Echora</span><i data-lucide="arrow-down"></i></a>
     </header>
 
     <main class="home-view" data-view="home">
       <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-scenes" aria-hidden="true">
+          <figure class="hero-scene is-active is-discovery-focus" data-hero-scene="0"><span class="hero-scene-window"><img src="/media/echora-desktop-light.png" alt="" /></span></figure>
+          <figure class="hero-scene is-ai is-ai-focus" data-hero-scene="1"><span class="hero-scene-window"><img src="/media/echora-ai-light.png" alt="" /></span></figure>
+          <figure class="hero-scene is-mobile is-mobile-focus" data-hero-scene="2"><span class="hero-scene-window"><img src="/media/echora-mobile-light.png" alt="" /></span></figure>
+        </div>
         <div class="hero-shade" aria-hidden="true"></div>
         <div class="hero-content">
-          <span class="hero-kicker"><img src="/brand-mark.svg" alt="" />智能音乐工作空间</span>
           <h1 id="hero-title">Echora</h1>
-          <p>发现、编排与聆听，在同一个音乐空间自然衔接。</p>
+          <p>汇集跨平台音乐内容，以 AI 完成编排，并在不同终端延续每一次聆听。</p>
           <div class="hero-actions">
-            <a class="primary-action" href="#download" data-download-jump><i data-lucide="download"></i><span data-primary-download>下载 Echora</span></a>
-            <a class="secondary-action" href="#product"><span>了解 Echora</span><i data-lucide="arrow-right"></i></a>
+            <a class="primary-action" href="/product"><span>了解 Echora</span><i data-lucide="arrow-right"></i></a>
+            <a class="secondary-action" href="#clients" data-client-jump><span>选择终端</span><i data-lucide="arrow-down"></i></a>
           </div>
-          <div class="hero-facts" aria-label="产品特性">
-            <span><i data-lucide="library-big"></i>多平台音乐</span>
-            <span><i data-lucide="sparkles"></i>AI 编排</span>
-            <span><i data-lucide="shield-check"></i>本地优先</span>
+        </div>
+        <div class="hero-scene-switcher" role="tablist" aria-label="Echora 产品场景">
+          <button class="is-active" type="button" role="tab" aria-selected="true" data-hero-scene-button="0"><em>01</em><span><strong>跨源发现</strong><small>推荐、精选与榜单统一呈现</small></span></button>
+          <button type="button" role="tab" aria-selected="false" data-hero-scene-button="1"><em>02</em><span><strong>AI 音乐场</strong><small>将聆听意图转化为可编辑编排</small></span></button>
+          <button type="button" role="tab" aria-selected="false" data-hero-scene-button="2"><em>03</em><span><strong>多端体验</strong><small>为桌面、浏览器与移动设备分别设计</small></span></button>
+        </div>
+      </section>
+
+      <section class="product-story" id="product" data-product-story aria-labelledby="experience-title">
+        <div class="product-story-sticky">
+          <div class="product-story-copy">
+            <h2 id="experience-title">发现、编排与播放，<br />构成完整的音乐体验</h2>
+            <p>内容、队列与播放状态贯穿始终，让每一次选择自然进入下一步。</p>
+            <nav class="product-story-chapters" aria-label="Echora 产品能力">
+              <button class="is-active" type="button" data-product-story-button="0" aria-current="step"><em>01</em><span><strong>跨源发现</strong><small>每日推荐、精选、榜单与搜索归于一致的浏览体系。</small></span></button>
+              <button type="button" data-product-story-button="1"><em>02</em><span><strong>AI 音乐场</strong><small>根据聆听意图生成提案，并保留完整的调整空间。</small></span></button>
+              <button type="button" data-product-story-button="2"><em>03</em><span><strong>移动聆听</strong><small>适配触控、系统媒体控制、横竖屏与离线场景。</small></span></button>
+            </nav>
+          </div>
+          <div class="product-story-stage" data-product-story-stage>
+            <figure class="is-active is-discovery-focus" data-product-story-scene="0"><img src="/media/echora-desktop.png" alt="Echora 桌面端音乐发现" /><figcaption><strong>跨源发现</strong><span>精选、榜单与音乐服务</span></figcaption></figure>
+            <figure class="is-ai-focus" data-product-story-scene="1"><img src="/media/echora-ai.png" alt="Echora AI 音乐场" /><figcaption><strong>AI 音乐场</strong><span>对话、预览与编排</span></figcaption></figure>
+            <figure class="is-mobile is-mobile-focus" data-product-story-scene="2"><img src="/media/echora-mobile.png" alt="Echora 移动端音乐首页" /><figcaption><strong>移动聆听</strong><span>触控、手势与系统播放</span></figcaption></figure>
           </div>
         </div>
       </section>
 
-      <section class="experience-band" id="product" aria-labelledby="experience-title">
-        <div class="experience-copy">
-          <span>同一个 Echora，各自舒适的体验</span>
-          <h2 id="experience-title">为桌面与移动端分别设计</h2>
-          <p>音乐、歌单、播放与会话保持一致，界面则遵循每一种设备的使用方式。</p>
-          <div class="experience-points">
-            <div><i data-lucide="monitor"></i><span><strong>桌面端</strong><small>更完整的音乐资料库、智能编排与播放控制。</small></span></div>
-            <div><i data-lucide="smartphone"></i><span><strong>移动端</strong><small>围绕触控、手势和随身聆听重新组织。</small></span></div>
-          </div>
+      <section class="capability-band" aria-label="Echora 核心能力">
+        <div class="capability-index">
+          <article><em>01</em><strong>统一的内容视野</strong><p>推荐、精选、榜单与搜索遵循一致的浏览和播放逻辑。</p></article>
+          <article><em>02</em><strong>可掌控的 AI 编排</strong><p>AI 提供可预览的方案，歌曲选择与顺序始终可以调整。</p></article>
+          <article><em>03</em><strong>完整的播放体验</strong><p>队列、歌词、音质与声音空间围绕当前播放自然展开。</p></article>
+          <article><em>04</em><strong>连续的账户体验</strong><p>歌单、收藏、设置、会话与偏好在不同终端保持一致。</p></article>
         </div>
-        <div class="product-scenes" aria-label="Echora 产品界面">
-          <figure class="desktop-scene"><img src="/media/echora-desktop.png" alt="Echora 桌面端音乐首页" /></figure>
-          <figure class="mobile-scene"><img src="/media/echora-mobile.png" alt="Echora 移动端音乐首页" /></figure>
+      </section>
+
+      <section class="client-band" id="clients" aria-labelledby="client-title">
+        <header><span>多端体验</span><h2 id="client-title">选择适合此刻的 Echora</h2><p>Web、桌面与移动应用提供一致的核心体验，并针对各自设备保留合适的交互与系统能力。</p></header>
+        <div class="client-options">
+          <a href="https://echora-web.lili.uno/" data-web-app-link><span><i data-lucide="globe-2"></i><strong>Web</strong></span><small>无需安装，立即使用</small><i data-lucide="arrow-up-right"></i></a>
+          <a href="#download" data-download-jump><span><i data-lucide="monitor"></i><strong>桌面应用</strong></span><small>macOS 与 Windows</small><i data-lucide="arrow-down"></i></a>
+          <a href="#download" data-download-jump><span><i data-lucide="smartphone"></i><strong>移动应用</strong></span><small>iOS 与 Android</small><i data-lucide="arrow-down"></i></a>
         </div>
       </section>
 
       <section class="download-band" id="download" aria-labelledby="download-title">
         <div class="section-heading">
-          <div><span>桌面与移动端</span><h2 id="download-title">下载 Echora</h2></div>
-          <p data-release-summary>正在读取最新版本</p>
+          <div><span>应用</span><h2 id="download-title">下载 Echora</h2></div>
+          <p data-release-summary>安装包与版本信息由 GitHub Releases 提供</p>
         </div>
         <div class="recommended-download" data-recommended-download aria-live="polite">
           <span class="recommended-icon"><i data-lucide="monitor-down"></i></span>
-          <div><small>推荐版本</small><strong>正在识别当前设备</strong><p>稍候即可显示适合当前设备的版本。</p></div>
+          <div><small>推荐下载</small><strong>正在识别当前设备</strong><p>为当前平台匹配可用安装包。</p></div>
           <button type="button" disabled>准备中</button>
         </div>
         <div class="download-grid" data-download-grid></div>
         <a class="release-source" href="#" data-github-release hidden target="_blank" rel="noreferrer">在 GitHub Releases 查看全部安装包<i data-lucide="arrow-up-right"></i></a>
-        <p class="download-footnote"><i data-lucide="badge-check"></i><span>正式版本提供校验信息，更新不会影响你的歌单、设置与本地音乐。</span></p>
+        <p class="download-footnote"><i data-lucide="badge-check"></i><span>正式版本提供校验信息，应用更新不会移除歌单、设置与本地音乐。</span></p>
       </section>
 
       <section class="release-band" id="release" aria-labelledby="release-title" data-release-section hidden>
@@ -80,40 +107,185 @@
         </div>
         <div class="release-detail" data-release-detail>
           <div class="release-date"><i data-lucide="calendar-days"></i><span>版本发布后将在这里显示更新内容。</span></div>
-          <p>下载页与客户端会自动使用同一份发布信息。</p>
+          <p>各平台应用版本由同一发布源提供。</p>
         </div>
       </section>
 
       <section class="trust-band" aria-labelledby="trust-title">
-        <div><span>数据边界</span><h2 id="trust-title">你的音乐习惯留在你的设备</h2></div>
-        <p>Echora 默认在本地保存歌单、会话、记忆与服务凭据。网页、桌面和移动版本会明确说明各自的存储位置。</p>
+        <div><span>数据边界</span><h2 id="trust-title">账户保持连续，设备保留边界</h2></div>
+        <p>账户保存歌单、收藏、设置与会话；下载、本地音乐和外部文件夹始终由当前设备管理。</p>
         <a href="/privacy">隐私说明<i data-lucide="arrow-right"></i></a>
       </section>
     </main>
 
+    <main class="route-view product-view" data-view="product" hidden>
+      <section class="route-hero product-route-hero"><figure class="is-ai-focus" aria-hidden="true"><img src="/media/echora-ai.png" alt="" /></figure><h1>让音乐从内容<br class="mobile-title-break" />抵达体验</h1><p>Echora 将发现、AI 编排、播放与声音能力组织在同一套音乐体验中。</p></section>
+      <section class="product-detail-band is-light"><div><span>01 · 发现</span><h2>跨平台内容，归于一致的发现体验</h2><p>每日推荐、新歌、热歌、精选与榜单集中呈现，搜索与播放保持统一，平台差异不再打断浏览路径。</p><ul class="product-detail-points"><li>跨平台聚合与统一搜索</li><li>层次清晰的精选与榜单</li><li>单一平台异常时保留其他来源</li></ul></div><figure class="product-focus is-discovery-focus"><img src="/media/echora-desktop-light.png" alt="Echora 浅色音乐发现界面" /></figure></section>
+      <section class="product-detail-band is-dark"><div><span>02 · 音乐场</span><h2>让聆听意图成为可编辑的编排</h2><p>音乐场结合当前队列与偏好生成编排提案。结果可预览、可调整、可撤销，最终选择始终由你决定。</p><ul class="product-detail-points"><li>对话与编排视图协同</li><li>顺序、能量与取舍自由调整</li><li>EchoraAI、自定义 AI 与本地编排</li></ul></div><figure class="product-focus is-ai-focus"><img src="/media/echora-ai.png" alt="Echora 音乐场界面" /></figure></section>
+      <section class="product-detail-band is-player-detail"><div><span>03 · 播放与声音</span><h2>围绕聆听，组织每一项播放能力</h2><p>播放队列、歌词、音质与声音空间围绕当前歌曲展开；已下载内容优先从设备读取，在线播放按可用来源自动选择。</p><ul class="product-detail-points"><li>连续的队列、歌词与播放状态</li><li>音质回退与多来源播放保障</li><li>设备下载、缓存与声音调节</li></ul></div><figure class="product-focus is-player-focus"><img src="/media/echora-player-light.png" alt="Echora 浅色播放界面" /></figure></section>
+      <section class="product-detail-band is-web-detail"><div><span>04 · 桌面应用</span><h2>为长时间聆听而设计的桌面体验</h2><p>桌面应用兼顾内容浏览、精细编排与系统媒体能力，并支持本地音乐、设备下载和离线播放。</p><ul class="product-detail-points"><li>面向桌面的高效导航与多任务布局</li><li>系统媒体控制与原生快捷操作</li><li>本地音乐、下载与离线播放</li></ul></div><figure class="product-focus is-discovery-focus"><img src="/media/echora-desktop-light.png" alt="Echora 桌面应用音乐发现界面" /></figure></section>
+      <section class="product-detail-band is-mobile-detail"><div><span>05 · 移动应用</span><h2>围绕触控与移动场景重新组织</h2><p>独立导航、手势操作与横竖屏布局适配不同握持方式，并连接系统媒体控制与设备下载能力。</p><ul class="product-detail-points"><li>触控优先的发现、播放与资料库</li><li>系统媒体控制与快捷入口</li><li>横竖屏布局、离线播放与设备下载</li></ul></div><figure class="product-focus is-mobile-focus"><img src="/media/echora-mobile-light.png" alt="Echora 浅色移动端界面" /></figure></section>
+      <section class="product-detail-band is-cloud-detail"><div><span>06 · Web</span><h2>在浏览器中获得完整的 Echora 体验</h2><p>无需安装即可使用发现、播放、账户与 AI 能力。界面会根据桌面或移动设备呈现合适的布局。</p><ul class="product-detail-points"><li>即开即用的完整核心体验</li><li>适配桌面与移动浏览器</li><li>始终使用当前在线版本</li></ul><a class="product-inline-action" href="https://echora-web.lili.uno/" data-web-app-link>使用 Web 版<i data-lucide="arrow-up-right"></i></a></div></section>
+      <section class="product-detail-band is-account-detail"><div><span>07 · 账户</span><h2>在不同终端延续熟悉的使用状态</h2><p>歌单、收藏、设置、会话与长期偏好由账户保存；下载、本地音乐与外部文件夹仍由当前设备管理。</p><ul class="product-detail-points"><li>账户内容跨端保持一致</li><li>离线时保留可用的设备状态</li><li>资料、安全与设备集中管理</li></ul></div></section>
+      <section class="product-principles"><article><span>在线音乐</span><strong>无需登录</strong></article><article><span>Echora AI</span><strong>登录后使用</strong></article><article><span>本地内容</span><strong>始终留在设备</strong></article></section>
+    </main>
+
     <main class="route-view" data-view="download" hidden>
-      <section class="route-hero"><span>正式版本</span><h1>下载 Echora</h1><p>选择适合当前设备的版本。</p></section>
+      <section class="route-hero"><span>应用下载</span><h1>下载 Echora</h1><p>选择适合当前设备的正式版本。安装包、更新说明与校验信息由 GitHub Releases 提供。</p></section>
       <section class="route-content download-route-content"><div class="recommended-download" data-recommended-download></div><div class="download-grid" data-download-grid></div><a class="release-source" href="#" data-github-release hidden target="_blank" rel="noreferrer">在 GitHub Releases 查看全部安装包<i data-lucide="arrow-up-right"></i></a></section>
     </main>
 
     <main class="route-view" data-view="releases" hidden>
-      <section class="route-hero"><span>版本</span><h1>版本与更新</h1><p>查看当前正式版及其更新内容，完整发布记录由 GitHub Releases 提供。</p></section>
+      <section class="route-hero"><span>发布记录</span><h1>版本与更新</h1><p>查看最新正式版本、更新内容与适用平台；完整发布记录由 GitHub Releases 提供。</p></section>
       <section class="route-content"><article class="release-article" data-release-article><span>正式版</span><h2>等待首个公开版本</h2><p>版本发布后将在这里显示。</p><a href="#" data-github-release hidden target="_blank" rel="noreferrer">在 GitHub 查看<i data-lucide="arrow-up-right"></i></a></article></section>
     </main>
 
-    <main class="route-view" data-view="privacy" hidden>
-      <section class="route-hero"><span>隐私</span><h1>清楚的数据边界</h1><p>不同终端使用不同的本地存储方式，核心原则保持一致。</p></section>
-      <section class="route-content prose">
-        <article><h2>本地保存</h2><p>歌单、喜欢、播放状态、AI 会话、长期记忆和服务配置默认保存在当前设备。Echora 不要求登录才能使用这些能力。</p></article>
-        <article><h2>外部服务</h2><p>音乐检索、播放地址和 AI 会话仅在对应功能被使用时请求已配置的服务。密钥不会写入会话内容或公开发布信息。</p></article>
-        <article><h2>更新检测</h2><p>检查更新时只发送应用版本、平台、系统架构、更新通道、构建标识和随机生成的安装标识，不读取硬件序列号。</p></article>
+    <main class="route-view privacy-view" data-view="privacy" hidden>
+      <section class="route-hero privacy-hero"><h1>隐私建立在清晰的数据边界之上</h1><p>Echora 分别处理账户内容、设备内容与服务请求，并仅在提供相应功能所需的范围内使用数据。</p></section>
+      <section class="privacy-boundaries" aria-label="数据边界">
+        <article><span>01</span><strong>账户内容</strong><p>歌单、收藏、设置、会话与长期偏好由 Echora Cloud 保存，用于维持跨端一致性。</p><em>随账户管理</em></article>
+        <article><span>02</span><strong>设备内容</strong><p>下载、本地音乐、外部文件夹与播放缓存由当前设备独立管理，不进入账户。</p><em>保留在设备</em></article>
+        <article><span>03</span><strong>服务请求</strong><p>搜索、播放解析与 AI 请求仅包含完成当前操作所需的信息，并按服务目的处理。</p><em>最小必要范围</em></article>
+      </section>
+      <section class="privacy-flow">
+        <header><h2>服务处理方式</h2><p>不同能力遵循各自的数据路径。在线音乐无需登录；EchoraAI 与账户能力在登录后提供。</p></header>
+        <div class="privacy-flow-list">
+          <article><span>在线音乐</span><div><strong>设备直连音乐来源</strong><p>Echora Cloud 完成目录检索与播放地址解析，音乐内容由设备直接连接相应来源，不经 Cloudflare 中转。</p></div></article>
+          <article><span>EchoraAI</span><div><strong>连接正式 AI 服务商</strong><p>Echora Cloud 仅完成鉴权与安全转发，将请求直接交付所配置的正式服务商；不改写内容，也不附加与当前编排无关的处理。</p></div></article>
+          <article><span>自定义 AI</span><div><strong>遵循所选服务配置</strong><p>供应商、模型与密钥随账户安全保存，请求由对应服务商依照其隐私政策和服务条款处理。</p></div></article>
+          <article><span>本地内容</span><div><strong>由设备独立管理</strong><p>缓存、下载与本地文件的管理只作用于当前设备，不改变账户中的歌单、收藏与会话。</p></div></article>
+        </div>
+      </section>
+      <section class="privacy-assurance" aria-label="隐私控制">
+        <header><span>用户控制</span><h2>账户与设备拥有独立、明确的管理边界</h2></header>
+        <div><article><strong>账户安全</strong><p>显示名称、密码、登录设备与账户状态统一在用户中心管理。</p></article><article><strong>设备空间</strong><p>缓存与下载可在应用内单独清理，不影响账户保存的内容。</p></article><article><strong>删除保护</strong><p>账户删除提供 7 天撤销期，期满后再执行数据删除。</p></article></div>
+      </section>
+      <section class="privacy-control"><div><h2>管理 Echora 账户</h2><p>资料、安全、登录设备与账户状态均可在用户中心查看和管理。</p></div><a href="/account">进入用户中心<i data-lucide="arrow-right"></i></a></section>
+    </main>
+
+    <main class="route-view account-view" data-view="account" hidden>
+      <section class="account-layout route-content" data-account-root>
+        <div class="account-panel">
+          <div class="cloud-state" data-account-status role="status" aria-live="polite" hidden></div>
+          <section data-account-auth>
+            <header class="account-auth-header">
+              <button type="button" class="account-auth-back" data-account-back hidden aria-label="返回登录"><i data-lucide="arrow-left"></i></button>
+              <h1 data-account-auth-title>登录 Echora</h1>
+              <p data-account-auth-copy hidden></p>
+            </header>
+            <form class="cloud-form" data-account-form>
+              <label><span>用户名</span><input name="username" autocomplete="username" required minlength="3" maxlength="32" /></label>
+              <label data-display-name-field hidden><span>显示名称</span><input name="displayName" maxlength="24" autocomplete="nickname" /></label>
+              <label data-recovery-field hidden><span>恢复码</span><input name="recoveryCode" autocomplete="off" /></label>
+              <label><span data-password-label>密码</span><input name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" /></label>
+              <div class="turnstile-slot" data-account-turnstile aria-live="polite"></div>
+              <button class="cloud-primary-action" type="submit" data-account-submit>登录</button>
+            </form>
+            <div class="account-auth-links" data-account-auth-links><button type="button" data-account-mode="register">创建账户</button><span></span><button type="button" data-account-mode="recover">忘记密码？</button></div>
+          </section>
+          <section class="account-dashboard" data-account-dashboard hidden>
+            <header class="account-dashboard-header"><div><span class="account-avatar" data-account-avatar>E</span><span><h1 data-account-display-name>Echora 用户</h1><p data-account-username></p></span></div><button type="button" data-account-logout>退出登录</button></header>
+            <section class="account-overview" aria-label="账户资料与安全">
+              <article><span><small>显示名称</small><strong data-account-profile-name>Echora 用户</strong></span><button type="button" data-account-edit="profile">编辑</button></article>
+              <article><span><small>用户名</small><strong data-account-profile-username>--</strong></span></article>
+              <article><span><small>密码</small><strong>已设置</strong></span><button type="button" data-account-edit="password">修改</button></article>
+            </section>
+            <div class="account-section-heading"><div><strong>设备</strong></div><button type="button" data-device-refresh aria-label="刷新设备">刷新</button></div>
+            <div class="device-list" data-device-list></div>
+            <details class="account-danger"><summary>删除账户</summary><div><strong>7 天撤销期</strong><p>到期后删除账户数据；设备内容不受影响。</p><form data-delete-form><input name="password" type="password" minlength="8" placeholder="输入密码确认" required /><button type="submit">申请删除</button></form></div></details>
+          </section>
+          <section class="recovery-result" data-recovery-result hidden><span>恢复码</span><strong data-recovery-code></strong><p>保存此恢复码，用于重设密码。</p><button type="button" data-recovery-done>完成</button></section>
+        </div>
+        <div class="account-editor-backdrop" data-account-editor hidden>
+          <section class="account-editor" role="dialog" aria-modal="true" aria-labelledby="account-editor-title">
+            <header><h2 id="account-editor-title" data-account-editor-title>编辑资料</h2><button type="button" data-account-editor-close aria-label="关闭"><i data-lucide="x"></i></button></header>
+            <div class="cloud-state" data-account-editor-status role="status" aria-live="polite" hidden></div>
+            <form class="account-profile-form cloud-form" data-profile-form hidden><label><span>显示名称</span><input name="displayName" maxlength="24" autocomplete="nickname" required /></label><div class="account-editor-actions"><button type="button" data-account-editor-cancel>取消</button><button class="cloud-primary-action" type="submit">保存</button></div></form>
+            <form class="account-password-form cloud-form" data-password-form hidden><label><span>当前密码</span><input name="currentPassword" type="password" autocomplete="current-password" minlength="8" required /></label><label><span>新密码</span><input name="newPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" required /></label><label><span>确认新密码</span><input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" required /></label><div class="account-editor-actions"><button type="button" data-account-editor-cancel>取消</button><button class="cloud-primary-action" type="submit">更新密码</button></div></form>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <main class="challenge-view" data-view="challenge" hidden>
+      <section class="challenge-shell" aria-label="Echora 安全验证">
+        <div class="turnstile-slot" data-challenge-turnstile></div>
+        <p data-challenge-status role="status">正在准备安全验证</p>
+      </section>
+    </main>
+
+    <main class="route-view admin-view" data-view="admin" hidden>
+      <section class="admin-shell" data-admin-root>
+        <header class="admin-header">
+          <a class="brand" href="/"><span class="brand-symbol"><img src="/echora-mark-v2.svg" alt="" /></span><strong>Echora</strong></a>
+          <span class="admin-header-context">Cloud 管理</span>
+          <button type="button" data-admin-logout hidden><i data-lucide="log-out"></i><span>退出</span></button>
+        </header>
+        <div class="admin-auth" data-admin-auth><header><span>仅限管理员</span><h1>登录系统管理</h1></header><form class="cloud-form" data-admin-login><label><span>用户名</span><input name="username" autocomplete="username" required /></label><label><span>密码</span><input name="password" type="password" autocomplete="current-password" required /></label><div class="turnstile-slot" data-admin-turnstile aria-live="polite"></div><button class="cloud-primary-action" type="submit">登录</button></form><div class="cloud-state" data-admin-status role="status" hidden></div></div>
+        <div class="admin-workspace" data-admin-workspace hidden>
+          <aside>
+            <header><span>控制台</span><strong>系统管理</strong></header>
+            <nav aria-label="系统管理导航">
+              <button class="is-active" type="button" data-admin-section="overview"><i data-lucide="layout-dashboard"></i><span>概览</span></button>
+              <button type="button" data-admin-section="music-health"><i data-lucide="activity"></i><span>音乐运行</span></button>
+              <button type="button" data-admin-section="system"><i data-lucide="sliders-horizontal"></i><span>服务配置</span></button>
+              <button type="button" data-admin-section="versions"><i data-lucide="package-open"></i><span>版本与发布</span></button>
+              <button type="button" data-admin-section="users"><i data-lucide="users"></i><span>用户</span></button>
+              <button type="button" data-admin-section="audit"><i data-lucide="list-checks"></i><span>操作记录</span></button>
+              <button type="button" data-admin-section="security"><i data-lucide="shield-check"></i><span>安全</span></button>
+            </nav>
+          </aside>
+          <main>
+            <section data-admin-panel="overview">
+              <header class="admin-page-heading"><div><span class="admin-page-label">系统概览</span><h1>运行状态</h1><p>账户、音乐服务与 AI 能力</p></div></header>
+              <div class="admin-metrics" data-admin-metrics></div>
+              <div class="admin-overview-grid">
+                <section><header><span class="admin-panel-icon"><i data-lucide="music-2"></i></span><div><h2>音乐服务</h2><span data-admin-music-state></span></div></header><div class="admin-provider-summary" data-admin-provider-summary></div></section>
+                <section><header><span class="admin-panel-icon"><i data-lucide="sparkles"></i></span><div><h2>AI</h2><span data-admin-ai-state></span></div></header><div class="admin-ai-summary" data-admin-ai-summary></div></section>
+              </div>
+              <section class="admin-activity"><header><h2>最近操作</h2><button type="button" data-admin-overview-audit>查看全部<i data-lucide="chevron-right"></i></button></header><div data-admin-recent-activity></div></section>
+            </section>
+            <section data-admin-panel="music-health" hidden>
+              <header class="admin-page-heading"><div><span class="admin-page-label">音乐服务</span><h1>音乐运行</h1><p>从目录请求到终端实际播放的运行质量</p></div><div class="admin-health-range" role="group" aria-label="统计范围"><button class="is-active" type="button" data-admin-health-days="7">7 天</button><button type="button" data-admin-health-days="30">30 天</button></div></header>
+              <div class="cloud-state" data-admin-health-status role="status" hidden></div>
+              <div class="admin-health-metrics" data-admin-health-metrics></div>
+              <div class="admin-health-list" data-admin-health-list></div>
+            </section>
+            <section data-admin-panel="system" hidden>
+              <header class="admin-page-heading"><div><span class="admin-page-label">系统能力</span><h1>服务配置</h1><p>管理账户策略、音乐平台与 AI 服务</p></div><div class="admin-page-actions"><div class="cloud-state" data-admin-config-status role="status" hidden></div><button class="cloud-primary-action" type="submit" form="admin-config-form">保存更改</button></div></header>
+              <form class="admin-config-form" id="admin-config-form" data-admin-config-form>
+                <fieldset class="admin-feature-group"><legend>账户</legend><div class="admin-feature-list">
+                  <section class="admin-feature"><div class="admin-feature-row"><span><strong>开放注册</strong><small>允许新用户创建 Echora 账户</small></span><label class="admin-switch"><input type="checkbox" name="registration" aria-label="开放注册" /><i></i></label></div></section>
+                </div></fieldset>
+                <fieldset class="admin-feature-group admin-music-config"><legend>音乐服务</legend><p class="admin-group-note">拖动调整平台优先级；停用的平台不参与搜索和播放解析。</p><div class="admin-provider-order" data-admin-providers></div><div class="admin-secret-field"><span><strong>音乐解析密钥</strong><small data-music-secret-state>读取中</small></span><input name="musicResolverKey" type="password" autocomplete="new-password" placeholder="留空保持现有密钥" /><label><input type="checkbox" name="clearMusicResolver" />移除</label></div></fieldset>
+                <fieldset class="admin-feature-group"><legend>AI</legend><div class="admin-feature-list">
+                  <section class="admin-feature"><div class="admin-feature-row"><span><strong>EchoraAI</strong><small>通过 Echora Cloud 使用托管 AI 服务</small></span><label class="admin-switch"><input type="checkbox" name="echoraAi" aria-label="EchoraAI" /><i></i></label></div><div class="admin-feature-config" data-feature-config="echoraAi" hidden><div class="admin-ai-grid"><label><span>服务协议</span><select name="aiProvider"><option value="openai">OpenAI Responses</option><option value="anthropic">Anthropic Messages</option><option value="compatible">OpenAI 兼容</option></select></label><label><span>模型</span><input name="aiModel" maxlength="128" placeholder="模型标识" /></label><label class="is-wide"><span>服务地址</span><input name="aiBaseUrl" maxlength="512" placeholder="https://api.example.com" /></label><label class="is-wide"><span>API 密钥</span><input name="aiApiKey" type="password" autocomplete="new-password" placeholder="留空保持现有密钥" /></label></div><label class="admin-clear-secret"><input type="checkbox" name="clearAiApiKey" />移除当前 AI 密钥</label><div class="admin-credential-state" data-ai-secret-state>读取中</div></div></section>
+                  <section class="admin-feature"><div class="admin-feature-row"><span><strong>自定义 AI</strong><small>允许用户保存并使用自己的 AI 服务</small></span><label class="admin-switch"><input type="checkbox" name="customAi" aria-label="自定义 AI" /><i></i></label></div></section>
+                </div></fieldset>
+                <fieldset class="admin-feature-group"><legend>安全</legend><div class="admin-feature-list">
+                  <section class="admin-feature"><div class="admin-feature-row"><span><strong>人机验证</strong><small>在注册、恢复和风险登录时使用 Turnstile</small></span><label class="admin-switch"><input type="checkbox" name="turnstile" aria-label="人机验证" /><i></i></label></div><div class="admin-feature-config" data-feature-config="turnstile" hidden><div class="admin-ai-grid"><label class="is-wide"><span>站点密钥</span><input name="turnstileSiteKey" maxlength="256" placeholder="输入 Turnstile Site Key" /></label><label class="is-wide"><span>服务密钥</span><input name="turnstileSecretKey" type="password" autocomplete="new-password" placeholder="留空保持现有密钥" /></label></div><label class="admin-clear-secret"><input type="checkbox" name="clearTurnstileSecret" />移除当前服务密钥</label><div class="admin-credential-state" data-turnstile-secret-state>读取中</div></div></section>
+                </div></fieldset>
+              </form>
+            </section>
+            <section data-admin-panel="versions" hidden>
+              <header class="admin-panel-heading"><div><span class="admin-page-label">交付控制</span><h1>版本与发布</h1><p>管理产品部署、客户端发布与灰度策略</p></div><button type="button" data-admin-version-sync><i data-lucide="refresh-cw"></i><span>同步 GitHub</span></button></header>
+              <div class="cloud-state" data-admin-version-status role="status" hidden></div>
+              <section class="admin-version-products"><header><h2>产品</h2><span>当前生产状态</span></header><div class="admin-version-table"><div class="admin-version-product-head"><span>产品</span><span>正式版本</span><span>部署</span><span>状态</span><span>更新时间</span></div><div data-admin-version-products></div></div></section>
+              <section class="admin-version-releases"><header><div><h2>发布记录</h2><span>草稿经确认后才会进入更新链路</span></div><label>通道<select data-admin-version-channel><option value="stable">Stable</option><option value="beta">Beta</option></select></label></header><div class="admin-release-table"><div class="admin-release-head"><span>版本</span><span>产品</span><span>策略</span><span>状态</span><span>更新</span><span></span></div><div data-admin-release-list></div></div></section>
+              <dialog class="admin-release-dialog" data-admin-release-dialog><form method="dialog" data-admin-release-form><header><div><span>发布策略</span><h2 data-admin-release-title></h2></div><button type="button" data-admin-release-close aria-label="关闭"><i data-lucide="x"></i></button></header><div class="admin-release-form-grid"><label><span>最低支持版本</span><input name="minimumVersion" inputmode="decimal" placeholder="0.0.0" required /></label><label><span>发布范围</span><select name="rolloutPercentage"><option value="100">全部用户</option><option value="75">75%</option><option value="50">50%</option><option value="25">25%</option><option value="10">10%</option><option value="0">暂停分发</option></select></label><label class="is-wide"><span>更新说明</span><textarea name="releaseNotes" rows="6"></textarea></label></div><footer><span data-admin-release-meta></span><div><button type="button" data-admin-release-save>保存策略</button><button class="cloud-primary-action" type="button" data-admin-release-primary></button></div></footer></form></dialog>
+            </section>
+            <section data-admin-panel="users" hidden><header class="admin-panel-heading"><div><span class="admin-page-label">账户管理</span><h1>用户</h1><p><span data-admin-user-count>0</span> 个账户</p></div><button type="button" data-admin-users-refresh><i data-lucide="refresh-cw"></i><span>刷新</span></button></header><div class="admin-user-filters"><label class="admin-search-field"><i data-lucide="search"></i><input type="search" data-admin-user-query placeholder="搜索用户名或显示名称" /></label><select data-admin-user-status aria-label="用户状态"><option value="all">全部状态</option><option value="active">正常</option><option value="disabled">已停用</option><option value="deletion">等待删除</option></select><select data-admin-user-sort aria-label="用户排序"><option value="created_desc">最近注册</option><option value="active_desc">最近活跃</option><option value="content_desc">内容数量</option><option value="username_asc">用户名</option></select></div><div class="cloud-state" data-admin-user-status-message role="status" hidden></div><div class="admin-user-table"><div class="admin-user-table-head"><span>用户</span><span>最近活跃</span><span>账户内容</span><span>状态</span><span></span></div><div class="admin-user-list" data-admin-user-list></div></div><div class="admin-pagination" data-admin-user-pagination hidden><button type="button" data-admin-user-prev><i data-lucide="chevron-left"></i><span>上一页</span></button><span data-admin-user-page></span><button type="button" data-admin-user-next><span>下一页</span><i data-lucide="chevron-right"></i></button></div></section>
+            <section data-admin-panel="audit" hidden><header class="admin-panel-heading"><div><span class="admin-page-label">审计</span><h1>操作记录</h1><p>最近 100 条管理操作</p></div><button type="button" data-admin-audit-refresh><i data-lucide="refresh-cw"></i><span>刷新</span></button></header><div class="admin-audit-list" data-admin-audit-list></div></section>
+            <section data-admin-panel="security" hidden><header class="admin-page-heading"><div><span class="admin-page-label">管理员</span><h1>安全</h1><p>管理登录密码与当前会话</p></div></header><section class="admin-security-panel"><div class="admin-security-identity"><span class="account-avatar" data-admin-avatar>E</span><div><strong data-admin-display-name>Echora 管理员</strong><small data-admin-username></small></div></div><form class="admin-password-form cloud-form" data-admin-password-form><label><span>当前密码</span><input name="currentPassword" type="password" autocomplete="current-password" minlength="8" required /></label><label><span>新密码</span><input name="newPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" required /></label><label><span>确认新密码</span><input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" required /></label><div class="admin-form-actions"><div class="cloud-state" data-admin-security-status role="status" hidden></div><button class="cloud-primary-action" type="submit">更新密码</button></div></form></section></section>
+          </main>
+        </div>
       </section>
     </main>
 
     <footer>
-      <a class="brand footer-brand" href="/"><span class="brand-symbol"><img src="/brand-mark.svg" alt="" /></span><strong>Echora</strong></a>
+      <a class="brand footer-brand" href="/"><span class="brand-symbol"><img src="/echora-mark-v2.svg" alt="" /></span><strong>Echora</strong></a>
       <p>智能音乐工作空间</p>
-      <nav aria-label="页脚导航"><a href="/download">下载</a><a href="/releases" data-release-nav hidden>版本</a><a href="/privacy">隐私</a></nav>
+      <nav aria-label="页脚导航"><a href="/product">产品</a><a href="https://echora-web.lili.uno/" data-web-app-link>Web 版</a><a href="/download">下载</a><a href="/releases" data-release-nav hidden>版本</a><a href="/privacy">隐私</a><a href="/account">账户</a></nav>
     </footer>
     <script type="module" src="/main.ts"></script>
   </body>

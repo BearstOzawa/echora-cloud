@@ -23,7 +23,6 @@ describe('GitHub release source', () => {
     const manifest = await fetchGithubReleaseManifest({
       GITHUB_REPOSITORY: 'echora/app',
       R2_DOWNLOAD_BASE_URL: 'https://releases.echora.test',
-      WEB_APP_URL: 'https://echora.test/app',
     }, 'stable')
     expect(manifest).toMatchObject({
       version: '0.2.0',
@@ -38,6 +37,6 @@ describe('GitHub release source', () => {
       sha256: 'a'.repeat(64),
     })
     expect(manifest.actions['mobile:android:universal']?.type).toBe('apk-download')
-    expect(manifest.actions.web).toEqual({ type: 'web-refresh', url: 'https://echora.test/app' })
+    expect(manifest.actions.web).toBeUndefined()
   })
 })

@@ -1,16 +1,29 @@
 # Echora Cloud
 
-Echora 官网与版本分发服务。
+Echora 的官网、账户数据、在线音乐、托管 AI 与版本分发服务。
 
-## 职责
+## 产品边界
 
-- 托管官网静态资源
-- 读取 GitHub Releases
-- 提供 Web、桌面端和移动端更新接口
-- 使用 KV 缓存发布信息
-- 可选使用 R2 提供安装包镜像
+- 在线音乐无需登录；Cloud 负责检索与解析，音频由终端直连内容源。
+- Echora AI 需要登录并经 Cloud 转发；自定义 AI 由终端直连，凭据加密保存。
+- 设置、歌单、收藏、会话和长期偏好以云端为准，原生端保留离线快照与待提交更改。
+- 下载和导入音乐属于设备，不进入账户数据，也不经过 Cloud 存储或转发。
+- 版本与安装包来自 GitHub Releases；R2 只承载官网媒体、头像、附件或可选安装包镜像。
 
-版本号、更新说明和安装包地址均来自 GitHub Release，不在官网代码中维护。
+## Cloudflare 资源
+
+| 资源 | 名称 | 职责 |
+| --- | --- | --- |
+| Worker | `echora-cloud` | API、官网与定时任务 |
+| D1 | `echora-cloud` | 账户、云端数据、版本记录和审计 |
+| KV | `echora-cloud` | 系统配置与已发布版本快照 |
+| R2 | `echora-cloud` | 产品文件与对象资源 |
+
+## 账户与管理
+
+- 普通账户与管理员账户使用独立的数据表、会话和入口；管理员不参与用户数据、设备与同步统计。
+- 注册、账户恢复和管理员登录使用 Turnstile；普通登录仅在连续失败或触发限流后要求验证。
+- 管理操作写入审计记录。管理员无恢复码，密码由已登录的管理员自行更新。
 
 ## 开发
 
@@ -19,38 +32,25 @@ npm install
 npm run dev
 ```
 
-本地地址：`http://127.0.0.1:8787/`
+本地地址为 `http://127.0.0.1:8787/`。本地密钥写入 `.dev.vars`，字段见 `.dev.vars.example`。
 
-## 配置
+## 部署
 
-| 变量 | 必需 | 用途 |
-| --- | --- | --- |
-| `GITHUB_REPOSITORY` | 是 | Release 仓库，格式为 `owner/repository` |
-| `GITHUB_TOKEN` | 否 | 提高 GitHub API 限额或访问私有仓库 |
-| `GITHUB_CACHE_SECONDS` | 否 | GitHub Release 缓存时间 |
-| `R2_DOWNLOAD_BASE_URL` | 否 | 安装包镜像地址 |
-| `WEB_APP_URL` | 否 | Web 版入口 |
-| `ALLOWED_ORIGIN` | 否 | API 跨域来源 |
+生产密钥写入已忽略的 `.prod.vars`，或逐项使用 `wrangler secret put`。不要提交密钥，也不需要通过聊天传递。
 
-稳定版读取 GitHub 的 latest release。Worker 可根据 `.dmg`、`.exe`、`.msi`、`.AppImage`、`.deb`、`.apk` 和 `.ipa` 自动识别平台。
-
-`echora-release.json` 仅用于最低版本、灰度发布或自定义资产映射，格式见 [examples/echora-release.json](examples/echora-release.json)。
-
-## API
-
-- `GET /health`
-- `GET /v1/releases/latest`
-- `GET /v1/check`
-- `GET /v1/web`
-- `GET /v1/mobile/android`
-- `GET /v1/mobile/ios`
-- `GET /v1/tauri/:channel/:target`
-
-## 验证与部署
+`ADMIN_BOOTSTRAP_USERNAME` 与 `ADMIN_BOOTSTRAP_PASSWORD` 只用于首次建立管理员账户。首次登录 `/admin` 后，密码由独立管理员账户维护，可删除生产环境中的 `ADMIN_BOOTSTRAP_PASSWORD`。
 
 ```bash
 npm run typecheck
 npm test
 npm run build
+npx wrangler secret bulk .prod.vars
+npx wrangler d1 migrations apply echora-cloud --remote
 npx wrangler deploy
 ```
+
+## 版本与发布
+
+D1 保存产品、版本、部署与发布策略；KV 提供已发布快照。GitHub Releases 负责安装包，导入后由管理员确认发布。客户端更新检查不实时访问 GitHub。
+
+GitHub Webhook 使用 `/v1/internal/releases/github`，部署登记使用 `/v1/internal/deployments`。对应密钥为 `GITHUB_WEBHOOK_SECRET` 与 `INTERNAL_INGESTION_SECRET`。

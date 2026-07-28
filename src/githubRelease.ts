@@ -21,11 +21,6 @@ type GithubRelease = {
   assets: GithubAsset[]
 }
 
-type CachedGithubRelease = {
-  cachedAt: number
-  manifest: ReleaseManifest
-}
-
 const policyAssetName = 'echora-release.json'
 const repositoryPattern = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/
 
@@ -144,7 +139,6 @@ const buildActions = async (release: GithubRelease, policy: ReleasePolicy | null
   }
   const entries = await Promise.all(Object.entries(targets).map(async ([target, targetPolicy]) => [target, await actionFromAsset(target, targetPolicy, release, env)] as const))
   const actions = Object.fromEntries(entries.filter((entry) => entry[1] !== null)) as Record<string, ReleaseAction>
-  if (env.WEB_APP_URL?.trim()) actions.web = { type: 'web-refresh', url: env.WEB_APP_URL.trim() }
   return actions
 }
 
@@ -167,32 +161,5 @@ export const fetchGithubReleaseManifest = async (env: WorkerEnv, channel: string
     releaseNotes: policy?.releaseNotes?.trim() || release.body?.trim() || release.name?.trim() || '',
     ...(policy?.rollout ? { rollout: policy.rollout } : {}),
     actions: await buildActions(release, policy, env),
-  }
-}
-
-const cacheKey = (repository: string, channel: string) => `github-release:${repository}:${channel}`
-
-const cacheSeconds = (env: WorkerEnv) => {
-  const value = Number(env.GITHUB_CACHE_SECONDS ?? 600)
-  return Number.isFinite(value) ? Math.max(60, Math.min(3600, Math.round(value))) : 600
-}
-
-export const loadGithubRelease = async (env: WorkerEnv, channel: string, execution?: ExecutionContext) => {
-  const repository = env.GITHUB_REPOSITORY?.trim()
-  if (!repository) return null
-  const key = cacheKey(repository, channel)
-  const cached = env.RELEASES ? await env.RELEASES.get<CachedGithubRelease>(key, 'json') : null
-  if (cached && Date.now() - cached.cachedAt < cacheSeconds(env) * 1000) return cached.manifest
-  try {
-    const manifest = await fetchGithubReleaseManifest(env, channel)
-    if (env.RELEASES) {
-      const write = env.RELEASES.put(key, JSON.stringify({ cachedAt: Date.now(), manifest } satisfies CachedGithubRelease))
-      if (execution) execution.waitUntil(write)
-      else await write
-    }
-    return manifest
-  } catch (error) {
-    if (cached) return cached.manifest
-    throw error
   }
 }

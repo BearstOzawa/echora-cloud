@@ -4,16 +4,22 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-07-20",
   "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "echora-cloud.lili.uno",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application",
-    "run_worker_first": ["/health", "/v1/*", "/help/install/ios"]
+    "run_worker_first": ["/health", "/v1/*", "/account*", "/admin*", "/help/install/ios"]
   },
   "vars": {
-    "ALLOWED_ORIGIN": "*",
-    "GITHUB_CACHE_SECONDS": "600",
-    "GITHUB_REPOSITORY": "BearstOzawa/echora-cloud"
+    "ALLOWED_ORIGIN": "https://echora-web.lili.uno,https://echora-web.bearstozawa.workers.dev,https://echora-cloud.lili.uno,http://127.0.0.1:1421,http://127.0.0.1:1422,http://localhost:1421,http://localhost:1422,tauri://localhost,http://tauri.localhost,https://tauri.localhost",
+    "OFFICIAL_WEB_URL": "https://echora-web.lili.uno",
+    "GITHUB_REPOSITORY": "BearstOzawa/echora"
   },
   "kv_namespaces": [
     {
@@ -21,7 +27,31 @@
       "id": "7b079f385f8e49d8a050a01d91e1b25d"
     }
   ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "echora-cloud",
+      "database_id": "748f4e65-36c3-4577-b0ba-50821557db2a",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "echora-cloud"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "AUTH_RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": { "limit": 10, "period": 60 }
+    }
+  ],
   "observability": {
     "enabled": true
+  },
+  "triggers": {
+    "crons": ["17 3 * * *"]
   }
 }

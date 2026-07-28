@@ -1,4 +1,26 @@
-GITHUB_REPOSITORY=replace-owner/replace-repository
-GITHUB_CACHE_SECONDS=600
-WEB_APP_URL=http://127.0.0.1:1420
-R2_DOWNLOAD_BASE_URL=https://replace-with-download-domain.example
+# Generate with: openssl rand -base64 32
+DATA_ENCRYPTION_KEY="replace-with-a-long-random-secret"
+
+# One service credential shared by Echora music resolution.
+ECHORA_MUSIC_RESOLVER_KEY="replace-with-music-resolver-key"
+
+# Echora AI upstream. Requests are authenticated by Echora Cloud.
+ECHORA_AI_PROVIDER="openai"
+ECHORA_AI_BASE_URL="https://api.example.com/v1"
+ECHORA_AI_MODEL="replace-with-model-id"
+ECHORA_AI_API_KEY="replace-with-ai-api-key"
+
+# Used only to create the first administrator account.
+ADMIN_BOOTSTRAP_USERNAME="replace-with-admin-username"
+ADMIN_BOOTSTRAP_PASSWORD="replace-with-a-strong-initial-password"
+ADMIN_SESSION_HOURS="12"
+
+TURNSTILE_SITE_KEY="replace-with-turnstile-site-key"
+TURNSTILE_SECRET_KEY="replace-with-turnstile-secret-key"
+
+# HMAC secrets for GitHub release webhooks and deployment registration.
+GITHUB_WEBHOOK_SECRET="replace-with-github-webhook-secret"
+INTERNAL_INGESTION_SECRET="replace-with-deployment-ingestion-secret"
+
+AUTH_PBKDF2_ITERATIONS="100000"
+SESSION_DAYS="30"
