@@ -18,8 +18,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Echora Cloud
-        run: curl --fail --silent --show-error --retry 3 --retry-all-errors --retry-delay 5 https://echora-cloud.lili.uno/health > /dev/null
+        run: curl --fail --silent --show-error --max-time 20 --retry 3 --retry-all-errors --retry-delay 5 https://echora-cloud.bearstozawa.workers.dev/health > /dev/null
       - name: Online music capability
-        run: curl --fail --silent --show-error --retry 3 --retry-all-errors --retry-delay 5 https://echora-cloud.lili.uno/v1/music/status > /dev/null
+        run: curl --fail --silent --show-error --max-time 20 --retry 3 --retry-all-errors --retry-delay 5 https://echora-cloud.bearstozawa.workers.dev/v1/music/status > /dev/null
       - name: Echora Web
-        run: curl --fail --silent --show-error --retry 3 --retry-all-errors --retry-delay 5 https://echora-web.lili.uno/ > /dev/null
+        run: curl --fail --silent --show-error --max-time 20 --retry 3 --retry-all-errors --retry-delay 5 https://echora-web.bearstozawa.workers.dev/ > /dev/null
