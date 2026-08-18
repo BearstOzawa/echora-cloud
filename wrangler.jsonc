@@ -19,6 +19,7 @@
   "vars": {
     "ALLOWED_ORIGIN": "https://echora-web.lili.uno,https://echora-web.bearstozawa.workers.dev,https://echora-cloud.lili.uno,http://127.0.0.1:1421,http://127.0.0.1:1422,http://localhost:1421,http://localhost:1422,tauri://localhost,http://tauri.localhost,https://tauri.localhost",
     "OFFICIAL_WEB_URL": "https://echora-web.lili.uno",
+    "PUBLIC_CLOUD_URL": "https://echora-cloud.lili.uno",
     "GITHUB_REPOSITORY": "BearstOzawa/echora"
   },
   "kv_namespaces": [

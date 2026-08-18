@@ -11,6 +11,7 @@ import { deleteCredential, getCredential, pullChanges, pushChanges, putCredentia
 import { cleanupAuthRisk } from './turnstile'
 import { adminGithubSync, adminReleaseAction, adminVersions, githubReleaseWebhook, loadPublishedRelease, parseProduct, productForRequest, publicProductVersions, reconcileGithubReleases, registerDeployment } from './versionRegistry'
 import { cleanupMusicProviderHealth } from './musicHealth'
+import { proxyGithubReleaseAsset } from './githubRelease'
 
 const allowedPlatforms = new Set<UpdatePlatform>(['web', 'desktop', 'mobile'])
 const safeToken = /^[a-zA-Z0-9._-]{1,96}$/
@@ -145,6 +146,14 @@ export default {
       if (request.method !== 'GET') return json(request, env, { error: 'method not allowed' }, 405)
       if (url.pathname === '/v1/products/versions') return await publicProductVersions(request, env)
       if (url.pathname === '/v1/releases/latest') return await releaseCatalogRequest(request, env)
+      const releaseAssetMatch = url.pathname.match(/^\/v1\/releases\/assets\/(\d+)\/([^/]+)$/)
+      if (releaseAssetMatch) {
+        try {
+          return await proxyGithubReleaseAsset(request, env, releaseAssetMatch[1], decodeURIComponent(releaseAssetMatch[2]))
+        } catch {
+          return new Response('Release download unavailable', { status: 502, headers: { 'Cache-Control': 'no-store', 'X-Echora-Download-Error': 'proxy_unhandled' } })
+        }
+      }
       if (url.pathname === '/v1/check') return await checkRequest(request, env)
       if (url.pathname === '/v1/web') return await checkRequest(request, env, { platform: 'web', os: 'browser' })
       if (url.pathname === '/v1/mobile/android') return await checkRequest(request, env, { platform: 'mobile', os: 'android' })

@@ -123,6 +123,32 @@ describe('update worker', () => {
     })
   })
 
+  it('streams an authenticated GitHub draft asset without exposing the token', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: 42,
+        name: 'Echora-0.2.0-macOS-arm64.dmg',
+        url: 'https://api.github.test/assets/42',
+        browser_download_url: 'https://github.test/draft.dmg',
+        size: 4,
+      }), { headers: { 'Content-Type': 'application/json' } }))
+      .mockResolvedValueOnce(new Response(null, { status: 302, headers: { Location: 'https://objects.github.test/signed-asset' } }))
+      .mockResolvedValueOnce(new Response('dmg!', { status: 206, headers: { 'Content-Type': 'application/octet-stream', 'Content-Length': '4', 'Content-Range': 'bytes 0-3/42', 'Accept-Ranges': 'bytes' } }))
+    const downloadEnv = { ...env, GITHUB_REPOSITORY: 'echora/app', GITHUB_TOKEN: 'private-token' } as unknown as WorkerEnv
+
+    const response = await worker.fetch(new Request('https://cloud.example/v1/releases/assets/42/Echora-0.2.0-macOS-arm64.dmg', { headers: { Range: 'bytes=0-3' } }), downloadEnv)
+
+    expect(response.status).toBe(206)
+    expect(response.headers.get('Content-Range')).toBe('bytes 0-3/42')
+    expect(response.headers.get('Content-Disposition')).toContain('Echora-0.2.0-macOS-arm64.dmg')
+    await expect(response.text()).resolves.toBe('dmg!')
+    expect(fetchMock).toHaveBeenCalledTimes(3)
+    const authorization = ((fetchMock.mock.calls[1]?.[1] as RequestInit).headers as Headers).get('Authorization')
+    expect(authorization).toBe('Bearer private-token')
+    expect((fetchMock.mock.calls[2]?.[1] as RequestInit).headers).toEqual({ Range: 'bytes=0-3' })
+    expect(response.headers.get('Authorization')).toBeNull()
+  })
+
   it('redirects the retired iOS help route to downloads', async () => {
     const response = await worker.fetch(new Request('https://updates.example/help/install/ios'), env)
     expect(response.status).toBe(308)
@@ -274,7 +300,7 @@ describe('product capability boundaries', () => {
       ADMIN_BOOTSTRAP_USERNAME: 'owner',
       ADMIN_BOOTSTRAP_PASSWORD: 'a-strong-password',
     } as unknown as WorkerEnv
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify([{
       tag_name: 'v0.2.0',
       html_url: 'https://github.test/echora/app/releases/tag/v0.2.0',
       name: 'Echora 0.2.0',
@@ -284,17 +310,17 @@ describe('product capability boundaries', () => {
       published_at: '2026-07-20T10:00:00Z',
       created_at: '2026-07-20T09:00:00Z',
       assets: [
-        { name: 'Echora_0.2.0_aarch64.dmg', url: 'https://api.github.test/assets/1', browser_download_url: 'https://github.test/Echora.dmg', size: 42 },
-        { name: 'Echora_0.2.0_universal.apk', url: 'https://api.github.test/assets/2', browser_download_url: 'https://github.test/Echora.apk', size: 43 },
+        { id: 1, name: 'Echora_0.2.0_aarch64.dmg', url: 'https://api.github.test/assets/1', browser_download_url: 'https://github.test/Echora.dmg', size: 42 },
+        { id: 2, name: 'Echora_0.2.0_universal.apk', url: 'https://api.github.test/assets/2', browser_download_url: 'https://github.test/Echora.apk', size: 43 },
       ],
-    }), { status: 200, headers: { 'Content-Type': 'application/json' } }))
+    }]), { status: 200, headers: { 'Content-Type': 'application/json' } }))
 
     try {
       const { cookie } = await loginAdmin(accountEnv)
       const adminHeaders = { 'Content-Type': 'application/json', Cookie: cookie }
       const sync = await worker.fetch(new Request('https://cloud.example/v1/admin/versions/github-sync', { method: 'POST', headers: adminHeaders, body: JSON.stringify({ channel: 'stable' }) }), accountEnv)
       expect(sync.status).toBe(200)
-      await expect(sync.json()).resolves.toMatchObject({ status: 'success', releases: 2 })
+      await expect(sync.json()).resolves.toMatchObject({ status: 'success', releases: 2, version: '0.2.0' })
 
       const registry = await worker.fetch(new Request('https://cloud.example/v1/admin/versions', { headers: { Cookie: cookie } }), accountEnv)
       const registryPayload = await registry.json<{ releases: Array<{ id: string; product: string; status: string }> }>()

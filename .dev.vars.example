@@ -22,5 +22,12 @@ TURNSTILE_SECRET_KEY="replace-with-turnstile-secret-key"
 GITHUB_WEBHOOK_SECRET="replace-with-github-webhook-secret"
 INTERNAL_INGESTION_SECRET="replace-with-deployment-ingestion-secret"
 
+# Optional. A fine-grained token with access to BearstOzawa/echora is required
+# only when administrators need to import draft GitHub Releases.
+GITHUB_TOKEN="replace-with-fine-grained-github-token"
+
+# Public origin used for protected draft-asset download links.
+PUBLIC_CLOUD_URL="https://echora-cloud.lili.uno"
+
 AUTH_PBKDF2_ITERATIONS="100000"
 SESSION_DAYS="30"

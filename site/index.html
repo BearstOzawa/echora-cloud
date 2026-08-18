@@ -131,13 +131,49 @@
     </main>
 
     <main class="route-view" data-view="download" hidden>
-      <section class="route-hero"><span>应用下载</span><h1>下载 Echora</h1><p>选择适合当前设备的正式版本。安装包、更新说明与校验信息由 GitHub Releases 提供。</p></section>
-      <section class="route-content download-route-content"><div class="recommended-download" data-recommended-download></div><div class="download-grid" data-download-grid></div><a class="release-source" href="#" data-github-release hidden target="_blank" rel="noreferrer">在 GitHub Releases 查看全部安装包<i data-lucide="arrow-up-right"></i></a></section>
+      <section class="route-hero"><span>应用下载</span><h1>下载 Echora</h1><p>选择适合当前设备的版本。安装包、更新说明与校验信息由 GitHub Releases 提供。</p></section>
+      <section class="route-content download-route-content">
+        <div class="recommended-download" data-recommended-download></div>
+        <div class="download-grid" data-download-grid></div>
+        <a class="release-source" href="#" data-github-release hidden target="_blank" rel="noreferrer">在 GitHub Releases 查看全部安装包<i data-lucide="arrow-up-right"></i></a>
+        <section class="installation-guide" aria-labelledby="installation-title">
+          <header>
+            <div><span>安装</span><h2 id="installation-title">完成安装与首次打开</h2></div>
+            <p>各平台保留必要步骤；测试构建会明确标注额外处理。</p>
+          </header>
+          <div class="installation-tabs" role="tablist" aria-label="选择安装平台">
+            <button type="button" role="tab" aria-selected="true" data-install-tab="macos">macOS</button>
+            <button type="button" role="tab" aria-selected="false" data-install-tab="windows">Windows</button>
+            <button type="button" role="tab" aria-selected="false" data-install-tab="android">Android</button>
+          </div>
+          <div class="installation-panel" role="tabpanel" data-install-panel="macos">
+            <ol>
+              <li><span>01</span><div><strong>拖移至“应用程序”</strong><p>打开 DMG，将 Echora 拖入 Applications 文件夹。</p></div></li>
+              <li><span>02</span><div><strong>从“应用程序”打开</strong><p>正式签名版本可直接启动；当前测试构建可能被 macOS 拦截。</p></div></li>
+              <li class="installation-exception"><span>03</span><div><strong>仅在测试构建被拦截时</strong><p>确认安装包来自 Echora 官方 Release 后，在“终端”执行以下命令。</p><div class="installation-command"><code>xattr -rd com.apple.quarantine /Applications/Echora.app</code><button type="button" data-copy-install-command aria-label="复制 macOS 首次打开命令"><i data-lucide="copy"></i><span>复制</span></button></div><small data-copy-install-status aria-live="polite">此步骤会移除该应用的隔离标记，不适用于来源不明的安装包。</small></div></li>
+            </ol>
+          </div>
+          <div class="installation-panel" role="tabpanel" data-install-panel="windows" hidden>
+            <ol>
+              <li><span>01</span><div><strong>运行安装程序</strong><p>优先选择 EXE；需要企业部署时可使用 MSI。</p></div></li>
+              <li><span>02</span><div><strong>确认系统提示</strong><p>当前测试构建尚未完成代码签名，Windows 可能显示信誉提示。</p></div></li>
+              <li><span>03</span><div><strong>从开始菜单打开</strong><p>安装完成后，Echora 会保留本机下载与本地音乐。</p></div></li>
+            </ol>
+          </div>
+          <div class="installation-panel" role="tabpanel" data-install-panel="android" hidden>
+            <ol>
+              <li><span>01</span><div><strong>下载安装包</strong><p>下载 GitHub Release 提供的通用 APK。</p></div></li>
+              <li><span>02</span><div><strong>允许本次安装</strong><p>系统询问时，仅为当前浏览器或文件管理器授予安装权限。</p></div></li>
+              <li><span>03</span><div><strong>完成后关闭授权</strong><p>安装完成即可打开 Echora，无需持续保留未知来源安装权限。</p></div></li>
+            </ol>
+          </div>
+        </section>
+      </section>
     </main>
 
     <main class="route-view" data-view="releases" hidden>
       <section class="route-hero"><span>发布记录</span><h1>版本与更新</h1><p>查看最新正式版本、更新内容与适用平台；完整发布记录由 GitHub Releases 提供。</p></section>
-      <section class="route-content"><article class="release-article" data-release-article><span>正式版</span><h2>等待首个公开版本</h2><p>版本发布后将在这里显示。</p><a href="#" data-github-release hidden target="_blank" rel="noreferrer">在 GitHub 查看<i data-lucide="arrow-up-right"></i></a></article></section>
+      <section class="route-content"><article class="release-article" data-release-article><span>正式版</span><h2>等待首个公开版本</h2><div class="release-notes" data-release-notes><p>版本发布后将在这里显示。</p></div><a href="#" data-github-release hidden target="_blank" rel="noreferrer">查看完整发布记录<i data-lucide="arrow-up-right"></i></a></article></section>
     </main>
 
     <main class="route-view privacy-view" data-view="privacy" hidden>

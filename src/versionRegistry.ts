@@ -139,16 +139,20 @@ const upsertImportedRelease = async (env: WorkerEnv, product: VersionProductKey,
   return id
 }
 
-export const reconcileGithubReleases = async (env: WorkerEnv, channels: string[] = ['stable', 'beta']) => {
+type GithubReconcileOptions = {
+  includeDrafts?: boolean
+}
+
+export const reconcileGithubReleases = async (env: WorkerEnv, channels: string[] = ['stable', 'beta'], options: GithubReconcileOptions = {}) => {
   if (!env.DB || !env.GITHUB_REPOSITORY?.trim()) return []
-  const results: Array<{ channel: string; status: 'success' | 'failed'; releases?: number; error?: string }> = []
+  const results: Array<{ channel: string; status: 'success' | 'failed'; releases?: number; version?: string; error?: string }> = []
   for (const channel of channels) {
     try {
-      const manifest = await fetchGithubReleaseManifest(env, channel)
+      const manifest = await fetchGithubReleaseManifest(env, channel, options)
       const imported = await Promise.all((['echora-desktop', 'echora-android', 'echora-ios'] as VersionProductKey[])
         .map((product) => upsertImportedRelease(env, product, channel, manifest)))
       const releases = imported.filter(Boolean).length
-      results.push({ channel, status: 'success', releases })
+      results.push({ channel, status: 'success', releases, version: manifest.version })
       await env.DB.prepare('INSERT INTO version_sync_log (source, channel, status, detail_json, created_at) VALUES (?, ?, ?, ?, ?)')
         .bind('github', channel, 'success', JSON.stringify({ version: manifest.version, releases }), Date.now()).run()
     } catch (error) {
@@ -222,9 +226,9 @@ export const adminGithubSync = async (request: Request, env: WorkerEnv) => {
   const body = await readJson<{ channel?: unknown }>(request)
   const channel = typeof body.channel === 'string' ? body.channel.trim() : 'stable'
   if (!safeChannel.test(channel)) throw new HttpError(400, '发布通道无效', 'invalid_channel')
-  const results = await reconcileGithubReleases(env, [channel])
+  const results = await reconcileGithubReleases(env, [channel], { includeDrafts: true })
   const result = results[0]
-  if (!result || result.status === 'failed') throw new HttpError(502, 'GitHub 发布同步失败', 'github_sync_failed', { detail: result?.error })
+  if (!result || result.status === 'failed') throw new HttpError(502, result?.error || 'GitHub 发布同步失败', 'github_sync_failed')
   await audit(env, context.admin.id, 'version.github_sync', channel, result)
   return json(request, env, result)
 }

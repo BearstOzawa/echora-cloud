@@ -1,4 +1,4 @@
-import { Activity, ArrowDown, ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, BadgeCheck, CalendarDays, ChevronLeft, ChevronRight, Download, Globe2, GripVertical, LayoutDashboard, ListChecks, LogOut, Monitor, MonitorDown, Music2, PackageOpen, Play, RefreshCw, Search, ShieldCheck, SlidersHorizontal, Smartphone, Sparkles, Users, X, createIcons } from 'lucide'
+import { Activity, ArrowDown, ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, BadgeCheck, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Download, Globe2, GripVertical, LayoutDashboard, ListChecks, LogOut, Monitor, MonitorDown, Music2, PackageOpen, Play, RefreshCw, Search, ShieldCheck, SlidersHorizontal, Smartphone, Sparkles, Users, X, createIcons } from 'lucide'
 import './site.css'
 
 type DownloadAction = {
@@ -20,7 +20,7 @@ type ReleaseCatalog = {
   downloads: DownloadAction[]
 }
 
-const icons = { Activity, ArrowDown, ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, BadgeCheck, CalendarDays, ChevronLeft, ChevronRight, Download, Globe2, GripVertical, LayoutDashboard, ListChecks, LogOut, Monitor, MonitorDown, Music2, PackageOpen, Play, RefreshCw, Search, ShieldCheck, SlidersHorizontal, Smartphone, Sparkles, Users, X }
+const icons = { Activity, ArrowDown, ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, BadgeCheck, CalendarDays, Check, ChevronLeft, ChevronRight, Copy, Download, Globe2, GripVertical, LayoutDashboard, ListChecks, LogOut, Monitor, MonitorDown, Music2, PackageOpen, Play, RefreshCw, Search, ShieldCheck, SlidersHorizontal, Smartphone, Sparkles, Users, X }
 createIcons({ icons })
 
 const officialWebUrl = (import.meta.env.VITE_ECHORA_WEB_URL || 'https://echora-web.lili.uno').replace(/\/$/, '')
@@ -1278,9 +1278,11 @@ const setupAdmin = () => {
     setStateMessage(versionStatus)
     try {
       const channel = document.querySelector<HTMLSelectElement>('[data-admin-version-channel]')?.value || 'stable'
-      const result = await adminRequest<{ releases: number }>('/v1/admin/versions/github-sync', { method: 'POST', body: JSON.stringify({ channel }) })
+      const result = await adminRequest<{ releases: number; version?: string }>('/v1/admin/versions/github-sync', { method: 'POST', body: JSON.stringify({ channel }) })
       await Promise.all([loadVersions(), loadAudit()])
-      setStateMessage(versionStatus, `已同步 ${result.releases} 条发布记录`, 'success')
+      setStateMessage(versionStatus, result.version
+        ? `已导入 v${result.version}，生成 ${result.releases} 条待发布记录`
+        : `已生成 ${result.releases} 条待发布记录`, 'success')
     } catch (error) { setStateMessage(versionStatus, error instanceof Error ? error.message : 'GitHub 同步失败', 'error') }
     finally { button.disabled = false }
   })
@@ -1333,6 +1335,45 @@ const detectedPlatform = (): PlatformKey => {
   return 'web'
 }
 
+type ArchitectureKey = 'aarch64' | 'x86_64' | 'universal' | string
+
+const architectureFor = (action: DownloadAction): ArchitectureKey => targetParts(action.target)[2] || 'universal'
+
+const detectedArchitecture = async (): Promise<ArchitectureKey | undefined> => {
+  const userAgentData = (navigator as Navigator & {
+    userAgentData?: { getHighEntropyValues: (hints: string[]) => Promise<{ architecture?: string; bitness?: string }> }
+  }).userAgentData
+  if (!userAgentData?.getHighEntropyValues) return undefined
+  try {
+    const values = await userAgentData.getHighEntropyValues(['architecture', 'bitness'])
+    if (values.architecture === 'arm' && values.bitness === '64') return 'aarch64'
+    if (values.architecture === 'x86' && values.bitness === '64') return 'x86_64'
+  } catch { /* Browsers may withhold high-entropy architecture hints. */ }
+  return undefined
+}
+
+const downloadPresentation = (action: DownloadAction) => {
+  const platform = platformFor(action)
+  const architecture = architectureFor(action)
+  if (platform === 'darwin' && architecture === 'aarch64') {
+    return { eyebrow: 'macOS · Apple 芯片', title: 'Apple 芯片 Mac', detail: 'M1 及更新机型', button: '下载 Apple 芯片版', shortButton: 'Apple 芯片' }
+  }
+  if (platform === 'darwin' && architecture === 'x86_64') {
+    return { eyebrow: 'macOS · Intel', title: 'Intel Mac', detail: 'Intel 处理器机型', button: '下载 Intel 版', shortButton: 'Intel' }
+  }
+  if (platform === 'windows' && architecture === 'x86_64') {
+    return { eyebrow: 'Windows · x64', title: '64 位 Windows', detail: '适用于 x64 电脑', button: '下载 Windows x64', shortButton: 'Windows x64' }
+  }
+  if (platform === 'android' && architecture === 'universal') {
+    return { eyebrow: 'Android · 通用', title: 'Android 通用版', detail: '适用于主流 Android 设备', button: '下载 Android APK', shortButton: 'Android' }
+  }
+  if (platform === 'ios') {
+    return { eyebrow: 'iOS · 开发构建', title: 'iOS 未签名版', detail: '需要个人签名后安装', button: '下载 iOS 构建', shortButton: 'iOS' }
+  }
+  const definition = platformDefinitions[platform]
+  return { eyebrow: definition.label, title: definition.detail, detail: definition.detail, button: action.type === 'web-refresh' ? '打开 Web 版' : `下载 ${definition.label}`, shortButton: definition.label }
+}
+
 const formatSize = (bytes?: number) => {
   if (!bytes || bytes < 1) return ''
   const megabytes = bytes / 1024 / 1024
@@ -1344,21 +1385,97 @@ const formatDate = (value: string) => {
   return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
-const downloadLabel = (action: DownloadAction) => action.type === 'web-refresh' ? '打开 Web 版' : `下载 ${platformDefinitions[platformFor(action)].label}`
+const plainReleaseText = (value: string) => value
+  .replace(/<[^>]*>/g, '')
+  .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+  .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+  .replace(/[`*_~]/g, '')
+  .trim()
+
+const parsedReleaseNotes = (value: string) => {
+  const lines = value.replace(/\r/g, '').split('\n')
+  const sections: Array<{ title: string; items: string[] }> = []
+  let summary = ''
+  let current: { title: string; items: string[] } | undefined
+  let beforeFirstHeading = true
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim()
+    const heading = line.match(/^#{1,6}\s+(.+)$/)
+    if (heading) {
+      beforeFirstHeading = false
+      const title = plainReleaseText(heading[1])
+      current = /^(本次更新|更新内容|主要更新|已知限制)$/.test(title) ? { title, items: [] } : undefined
+      if (current) sections.push(current)
+      continue
+    }
+    if (!line || /^<\/?(?:p|img)\b/i.test(line) || /^\|/.test(line)) continue
+    if (beforeFirstHeading && !summary) {
+      summary = plainReleaseText(line)
+      continue
+    }
+    const item = line.match(/^[-*+]\s+(.+)$/)
+    if (current && item) {
+      const text = plainReleaseText(item[1])
+      if (text) current.items.push(text)
+    }
+  }
+
+  return {
+    summary: summary || '包含稳定性与体验改进。',
+    sections: sections.filter((section) => section.items.length),
+  }
+}
+
+const renderReleaseNotes = (container: HTMLElement, value: string) => {
+  const notes = parsedReleaseNotes(value)
+  const lead = document.createElement('p')
+  lead.className = 'release-notes-lead'
+  lead.textContent = notes.summary
+  container.replaceChildren(lead)
+  if (!notes.sections.length) return
+
+  const sectionList = document.createElement('div')
+  sectionList.className = 'release-note-sections'
+  notes.sections.forEach((section) => {
+    const block = document.createElement('section')
+    const heading = document.createElement('h3')
+    heading.textContent = section.title
+    const list = document.createElement('ul')
+    section.items.forEach((item) => {
+      const entry = document.createElement('li')
+      entry.textContent = item
+      list.append(entry)
+    })
+    block.append(heading, list)
+    sectionList.append(block)
+  })
+  container.append(sectionList)
+}
+
+const downloadLabel = (action: DownloadAction) => downloadPresentation(action).button
+
+const downloadTrustLabel = (action: DownloadAction) => {
+  const platform = platformFor(action)
+  if (platform === 'darwin' || platform === 'windows') return '未签名测试构建'
+  if (platform === 'ios') return '开发构建'
+  return action.sha256 ? '已提供校验' : '正式发布'
+}
 
 const downloadCard = (action: DownloadAction, recommended = false) => {
   const platform = platformFor(action)
   const definition = platformDefinitions[platform]
+  const presentation = downloadPresentation(action)
   const article = document.createElement('article')
   article.className = `download-card${recommended ? ' is-recommended' : ''}`
   const copy = document.createElement('div')
   const label = document.createElement('span')
   label.className = 'download-card-platform'
-  label.textContent = definition.label
+  label.textContent = presentation.eyebrow
   const title = document.createElement('strong')
-  title.textContent = action.label || definition.detail
+  title.textContent = action.label || presentation.title
   const meta = document.createElement('small')
-  meta.textContent = [formatSize(action.size), action.sha256 ? '已提供校验' : '正式发布'].filter(Boolean).join(' · ')
+  meta.textContent = [presentation.detail, formatSize(action.size), downloadTrustLabel(action)].filter(Boolean).join(' · ')
   copy.append(label, title, meta)
   const actions = document.createElement('div')
   actions.className = 'download-card-actions'
@@ -1393,15 +1510,35 @@ const pendingRecommended = () => {
   return fragment
 }
 
-const renderRecommended = (action: DownloadAction | undefined) => {
+const renderRecommended = (action: DownloadAction | undefined, choices: DownloadAction[] = []) => {
   document.querySelectorAll<HTMLElement>('[data-recommended-download]').forEach((container) => {
     container.replaceChildren()
+    if (choices.length > 1) {
+      const icon = document.createElement('span')
+      icon.className = 'recommended-icon'
+      icon.innerHTML = '<i data-lucide="monitor"></i>'
+      const copy = document.createElement('div')
+      copy.innerHTML = '<small>macOS</small><strong>选择适合这台 Mac 的版本</strong><p>M1 及更新机型选择 Apple 芯片；旧款机型选择 Intel。</p>'
+      const actions = document.createElement('div')
+      actions.className = 'recommended-actions'
+      choices.forEach((choice) => {
+        const link = document.createElement('a')
+        link.href = choice.url
+        link.rel = 'noreferrer'
+        link.textContent = downloadPresentation(choice).shortButton
+        link.setAttribute('aria-label', downloadLabel(choice))
+        actions.append(link)
+      })
+      container.append(icon, copy, actions)
+      return
+    }
     if (!action) {
       container.append(pendingRecommended())
       return
     }
     const platform = platformFor(action)
     const definition = platformDefinitions[platform]
+    const presentation = downloadPresentation(action)
     const icon = document.createElement('span')
     icon.className = 'recommended-icon'
     icon.innerHTML = `<i data-lucide="${definition.icon}"></i>`
@@ -1409,9 +1546,9 @@ const renderRecommended = (action: DownloadAction | undefined) => {
     const eyebrow = document.createElement('small')
     eyebrow.textContent = '推荐版本'
     const title = document.createElement('strong')
-    title.textContent = action.label || definition.label
+    title.textContent = action.label || presentation.title
     const detail = document.createElement('p')
-    detail.textContent = [definition.detail, formatSize(action.size)].filter(Boolean).join(' · ')
+    detail.textContent = [presentation.detail, formatSize(action.size), downloadTrustLabel(action)].filter(Boolean).join(' · ')
     copy.append(eyebrow, title, detail)
     const link = document.createElement('a')
     link.href = action.url
@@ -1421,14 +1558,18 @@ const renderRecommended = (action: DownloadAction | undefined) => {
   })
 }
 
-const renderRelease = (catalog: ReleaseCatalog) => {
+const renderRelease = (catalog: ReleaseCatalog, architecture?: ArchitectureKey) => {
   const detected = detectedPlatform()
-  const recommended = catalog.downloads.find((download) => platformFor(download) === detected)
+  const detectedDownloads = catalog.downloads.filter((download) => platformFor(download) === detected)
+  const architectureMatch = architecture ? detectedDownloads.find((download) => architectureFor(download) === architecture) : undefined
+  const choices = detected === 'darwin' && detectedDownloads.length > 1 && !architectureMatch ? detectedDownloads : []
+  const recommended = architectureMatch
+    ?? (choices.length ? undefined : detectedDownloads[0])
     ?? catalog.downloads.find((download) => platformFor(download) === 'web')
     ?? catalog.downloads[0]
-  renderRecommended(recommended)
+  renderRecommended(recommended, choices)
   document.querySelectorAll<HTMLElement>('[data-download-grid]').forEach((grid) => {
-    grid.replaceChildren(...catalog.downloads.map((download) => downloadCard(download, download === recommended)))
+    grid.replaceChildren(...catalog.downloads.map((download) => downloadCard(download, Boolean(recommended && download === recommended))))
   })
   document.querySelectorAll<HTMLElement>('[data-release-summary]').forEach((element) => { element.textContent = `v${catalog.version} · ${formatDate(catalog.publishedAt) || '正式版'}` })
   document.querySelectorAll<HTMLElement>('[data-release-title]').forEach((element) => { element.textContent = `Echora v${catalog.version}` })
@@ -1436,15 +1577,17 @@ const renderRelease = (catalog: ReleaseCatalog) => {
     const date = element.querySelector('span')
     const notes = element.querySelector('p')
     if (date) date.textContent = formatDate(catalog.publishedAt) || '正式版'
-    if (notes) notes.textContent = catalog.releaseNotes || '包含稳定性与体验改进。'
+    if (notes) notes.textContent = parsedReleaseNotes(catalog.releaseNotes).summary
   })
   document.querySelectorAll<HTMLElement>('[data-release-article]').forEach((article) => {
     const heading = article.querySelector('h2')
-    const notes = article.querySelector('p')
+    const status = article.querySelector(':scope > span')
+    const notes = article.querySelector<HTMLElement>('[data-release-notes]')
     if (heading) heading.textContent = `Echora v${catalog.version}`
-    if (notes) notes.textContent = catalog.releaseNotes || '包含稳定性与体验改进。'
+    if (status) status.textContent = ['正式版', formatDate(catalog.publishedAt)].filter(Boolean).join(' · ')
+    if (notes) renderReleaseNotes(notes, catalog.releaseNotes)
   })
-  document.querySelectorAll<HTMLElement>('[data-primary-download]').forEach((element) => { element.textContent = recommended ? downloadLabel(recommended) : '下载 Echora' })
+  document.querySelectorAll<HTMLElement>('[data-primary-download]').forEach((element) => { element.textContent = choices.length ? '下载 macOS' : recommended ? downloadLabel(recommended) : '下载 Echora' })
   document.querySelectorAll<HTMLAnchorElement>('[data-github-release]').forEach((link) => {
     link.hidden = !catalog.releaseUrl
     if (catalog.releaseUrl) link.href = catalog.releaseUrl
@@ -1469,7 +1612,7 @@ const loadRelease = async () => {
     if (!response.ok) throw new Error('release unavailable')
     const catalog = await response.json() as ReleaseCatalog
     if (!catalog.version || !Array.isArray(catalog.downloads)) throw new Error('release invalid')
-    renderRelease(catalog)
+    renderRelease(catalog, await detectedArchitecture())
   } catch {
     renderPendingRelease()
   }
@@ -1478,6 +1621,37 @@ const loadRelease = async () => {
 document.querySelectorAll<HTMLAnchorElement>('[data-download-jump]').forEach((anchor) => {
   if (activeRoute !== 'home') anchor.href = '/download'
 })
+
+const setupInstallationGuide = () => {
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-install-tab]')]
+  const panels = [...document.querySelectorAll<HTMLElement>('[data-install-panel]')]
+  if (!tabs.length || !panels.length) return
+  tabs.forEach((tab) => tab.addEventListener('click', () => {
+    const target = tab.dataset.installTab
+    tabs.forEach((item) => item.setAttribute('aria-selected', String(item === tab)))
+    panels.forEach((panel) => { panel.hidden = panel.dataset.installPanel !== target })
+  }))
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-install-command]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const command = 'xattr -rd com.apple.quarantine /Applications/Echora.app'
+      const status = button.closest('.installation-exception')?.querySelector<HTMLElement>('[data-copy-install-status]')
+      try {
+        await navigator.clipboard.writeText(command)
+        button.innerHTML = '<i data-lucide="check"></i><span>已复制</span>'
+        if (status) status.textContent = '命令已复制。仅在确认安装包来源后执行。'
+        createIcons({ icons })
+        window.setTimeout(() => {
+          button.innerHTML = '<i data-lucide="copy"></i><span>复制</span>'
+          if (status) status.textContent = '此步骤会移除该应用的隔离标记，不适用于来源不明的安装包。'
+          createIcons({ icons })
+        }, 2400)
+      } catch {
+        if (status) status.textContent = '浏览器未允许复制，请手动选择命令。'
+      }
+    })
+  })
+}
 document.querySelectorAll<HTMLAnchorElement>('[data-client-jump]').forEach((anchor) => {
   if (activeRoute !== 'home') anchor.href = '/#clients'
 })
@@ -1596,6 +1770,7 @@ if (activeRoute === 'challenge') {
 } else {
   setupHeroScenes()
   setupProductStories()
+  setupInstallationGuide()
   void setupAccountNavigation()
   setupAccountCenter()
   setupAdmin()

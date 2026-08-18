@@ -23,6 +23,15 @@ npx wrangler secret put INTERNAL_INGESTION_SECRET
 npx wrangler secret put GITHUB_WEBHOOK_SECRET
 ```
 
+系统管理中的手动同步默认可导入已发布的 GitHub Release。如需在发布前导入草稿，创建仅授权 `BearstOzawa/echora` 的 fine-grained GitHub token，并额外配置：
+
+```bash
+npx wrangler secret put GITHUB_TOKEN
+```
+
+该凭据仅用于管理员手动导入草稿；定时对账和 Release Webhook 始终只处理已发布版本。
+草稿安装包的下载地址由 `PUBLIC_CLOUD_URL` 生成，生产环境应配置为 `https://echora-cloud.lili.uno`。Cloud 以流式响应转发草稿资产，不在响应中暴露 GitHub 凭据。
+
 其余非敏感运行参数可保留在 `wrangler.jsonc` 或管理端配置中。不要将 `.dev.vars`、生产密钥文件或管理员密码提交到仓库。
 
 ## 首次部署

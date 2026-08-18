@@ -37,6 +37,7 @@ export type WorkerEnv = {
   ASSETS?: Fetcher
   ALLOWED_ORIGIN?: string
   OFFICIAL_WEB_URL?: string
+  PUBLIC_CLOUD_URL?: string
   GITHUB_REPOSITORY?: string
   GITHUB_TOKEN?: string
   R2_DOWNLOAD_BASE_URL?: string
