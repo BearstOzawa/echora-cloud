@@ -15,14 +15,14 @@
   },
   "dependencies": {
     "js-md5": "^0.9.2",
-    "lucide": "^0.468.0"
+    "lucide": "^0.577.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260719.1",
+    "@cloudflare/workers-types": "^5.20260815.1",
     "@types/node": "^22.20.1",
     "typescript": "^5.8.3",
     "vite": "^6.4.3",
     "vitest": "^4.1.10",
-    "wrangler": "^4.25.0"
+    "wrangler": "^4.123.0"
   }
 }
